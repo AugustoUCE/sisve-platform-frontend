@@ -1,6 +1,7 @@
 import { requestJson } from './http'
 import { clearStoredSession, getStoredSession } from './session'
 import type { BiometricStep, VoterCandidate } from '@/types/domain'
+import { isMockDataEnabled, mockActiveElection } from './mockData'
 
 interface ActiveElectionResponse {
   idEleccion: number
@@ -41,6 +42,10 @@ export async function verifyBiometric(): Promise<boolean> {
     return false
   }
 
+  if (isMockDataEnabled) {
+    return true
+  }
+
   try {
     const response = await requestJson<BackendValidateResponse>('auth', '/validate', {
       method: 'GET',
@@ -56,19 +61,38 @@ export async function verifyBiometric(): Promise<boolean> {
 }
 
 export async function fetchActiveElection(): Promise<ActiveElectionResponse | null> {
+  if (isMockDataEnabled) {
+    return mockActiveElection
+  }
+
   try {
     const elections = await requestJson<ActiveElectionResponse[]>('election', '/activas')
     return elections[0] ?? null
   } catch {
-    return null
+    return mockActiveElection
   }
 }
 
-export async function submitVote(payload: { idEleccion: number; idCandidato: number; idVotante: number }): Promise<BackendVoteResponse> {
+export async function submitVote(payload: { idEleccion: number; candidateIds: number[]; nullVote: boolean; idVotante: number }): Promise<BackendVoteResponse> {
   const session = getStoredSession()
 
   if (!session) {
     throw new Error('Debes iniciar sesión antes de votar.')
+  }
+
+  if (payload.nullVote && !isMockDataEnabled) {
+    throw new Error('El backend actual no registra voto nulo.')
+  }
+
+  if (isMockDataEnabled) {
+    clearStoredSession()
+    return {
+      mensaje: payload.nullVote
+        ? 'Voto nulo registrado correctamente en modo simulación.'
+        : 'Voto registrado correctamente en modo simulación.',
+      hashActual: `mock-hash-${Date.now()}`,
+      fechaRegistro: new Date().toISOString()
+    }
   }
 
   const response = await requestJson<BackendVoteResponse>('vote', '/votos', {

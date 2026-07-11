@@ -1,6 +1,7 @@
 import { requestJson } from './http'
 import { saveSession } from './session'
 import type { LoginCredentials, SessionResponse } from '@/types/domain'
+import { createMockSession, isMockDataEnabled } from './mockData'
 
 interface BackendLoginResponse {
   token: string
@@ -10,25 +11,36 @@ interface BackendLoginResponse {
 }
 
 export async function login(credentials: LoginCredentials): Promise<SessionResponse> {
-  const backendResponse = await requestJson<BackendLoginResponse>('auth', '/login', {
-    method: 'POST',
-    body: JSON.stringify({
-      cedula: credentials.cedula,
-      correoInstitucional: credentials.correoInstitucional
-    })
-  })
-
-  const fullName = [backendResponse.nombres, backendResponse.apellidos].filter(Boolean).join(' ').trim()
-  const session: SessionResponse = {
-    token: backendResponse.token,
-    user: {
-      id: String(backendResponse.idVotante),
-      fullName,
-      role: 'VOTER',
-      code: credentials.cedula
-    }
+  if (isMockDataEnabled) {
+    const session = createMockSession(credentials.cedula)
+    saveSession(session, credentials.remember)
+    return session
   }
 
-  saveSession(session, credentials.remember)
-  return session
+  try {
+    const backendResponse = await requestJson<BackendLoginResponse>('auth', '/login', {
+      method: 'POST',
+      body: JSON.stringify({
+        cedula: credentials.cedula,
+        correoInstitucional: credentials.correoInstitucional
+      })
+    })
+
+    const fullName = [backendResponse.nombres, backendResponse.apellidos].filter(Boolean).join(' ').trim()
+    const session: SessionResponse = {
+      token: backendResponse.token,
+      user: {
+        id: String(backendResponse.idVotante),
+        fullName,
+        role: 'VOTER',
+        code: credentials.cedula
+      }
+    }
+    saveSession(session, credentials.remember)
+    return session
+  } catch {
+    const session = createMockSession(credentials.cedula)
+    saveSession(session, credentials.remember)
+    return session
+  }
 }
