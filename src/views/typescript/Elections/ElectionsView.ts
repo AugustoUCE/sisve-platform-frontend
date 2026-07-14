@@ -75,7 +75,7 @@ export function useResultsView() {
 
   onMounted(async () => {
     const results = await fetchResults()
-    resultStats.value = results.stats
+    //resultStats.value = results.stats
     resultEntries.value = results.entries
     participationTimeline.value = results.timeline
     lastUpdate.value = new Intl.DateTimeFormat('es-EC', {

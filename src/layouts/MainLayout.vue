@@ -7,10 +7,10 @@
           <div class="account-copy">
             <strong>{{ profileName }}</strong>
           </div>
-          <RouterLink class="account-logout" to="/login">Salir</RouterLink>
+          <!-- <RouterLink class="account-logout" to="/login">Salir</RouterLink> -->
         </div>
-        <div>
-          <img src="@/assets/Logo.png" alt="Sisve logo" width="120" height="40" />
+        <div class="logo-container">
+          <img src="@/assets/Logo.png" alt="Sisve logo" width="40" height="40" />
         
           <p class="eyebrow">Sisve platform</p>
           
@@ -90,6 +90,12 @@ const profileAvatarSrc = computed(() => createAvatarDataUri(profileName.value))
   border-radius: 18px;
   background: rgba(255, 255, 255, 0.06);
   border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.logo-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .account-avatar {

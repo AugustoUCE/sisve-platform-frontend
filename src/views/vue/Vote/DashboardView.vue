@@ -1,8 +1,8 @@
-<template src="../html/DashboardView.html"></template>
+<template src="../../html/Vote/DashboardView.html"></template>
 
 <script setup lang="ts">
 import { useRouter } from 'vue-router'
-import { dashboardMeta, dashboardSubtitle, dashboardTabs, dashboardTitle, useVoterBoard } from '../typescript/DashboardView'
+import { dashboardMeta, dashboardSubtitle, dashboardTabs, dashboardTitle, useVoterBoard } from '../../typescript/Vote/DashboardView'
 
 const router = useRouter()
 const { selectedTab, voterProfile, timerText, selectedName, selectedLabel, canSubmit, setTab, selectCandidate, isCandidateSelected, selectBlank, clearBlankVote, submitCurrentBallot, visibleCandidates, nullVoteSelected } = useVoterBoard(router)
@@ -112,7 +112,7 @@ const { selectedTab, voterProfile, timerText, selectedName, selectedLabel, canSu
 	border: none;
 	border-radius: 14px;
 	cursor: pointer;
-	transition: transform 0.15s ease, filter 0.15s ease, opacity 0.15s ease;
+	transition: transform 0.15s ease, filter 0.15s ease, opacity 0.15s ease, background 0.15s ease, color 0.15s ease;
 }
 
 .tab {
@@ -134,16 +134,21 @@ const { selectedTab, voterProfile, timerText, selectedName, selectedLabel, canSu
 }
 
 .vote-banner.active {
-	border-color: rgba(47, 126, 199, 0.5);
-	box-shadow: 0 0 0 1px rgba(47, 126, 199, 0.18) inset;
+	border-color: rgba(14, 159, 110, 0.55);
+	box-shadow: 0 0 0 1px rgba(14, 159, 110, 0.18) inset;
 }
 
 .vote-banner-btn,
 .btn-card.btn-primary {
 	padding: 12px 18px;
 	color: white;
-	background: linear-gradient(135deg, var(--blue), var(--sky));
+	background: linear-gradient(135deg, #7ee0ad, var(--green));
 	font-weight: 700;
+}
+
+.vote-banner.active .vote-banner-btn,
+.btn-card.btn-primary:hover {
+	background: linear-gradient(135deg, #8be7b7, #20a96f);
 }
 
 .vote-banner-btn:disabled {
@@ -188,6 +193,12 @@ const { selectedTab, voterProfile, timerText, selectedName, selectedLabel, canSu
 .c-name {
 	font-family: 'Playfair Display', serif;
 	font-size: 1.25rem;
+	transition: color 0.15s ease, filter 0.15s ease;
+}
+
+.c-card:hover .c-name {
+	color: rgba(255, 255, 255, 0.98);
+	filter: brightness(1.12);
 }
 
 .c-tags {

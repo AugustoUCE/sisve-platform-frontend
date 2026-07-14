@@ -1,7 +1,7 @@
-<template src="../html/ElectionsView.html"></template>
+<template src="../../html/Elections/ElectionsView.html"></template>
 
 <script setup lang="ts">
-import { useResultsView } from '../typescript/ElectionsView'
+import { useResultsView } from '../../typescript/Elections/ElectionsView'
 
 const { lastUpdate, timeRemaining, displayEntries, resultStats, participationTimeline, selectionSummary, ballot, voterProfile, certificateCandidateNames, printCertificate } = useResultsView()
 </script>

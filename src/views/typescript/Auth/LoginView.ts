@@ -4,7 +4,7 @@ import { login } from '@/services/auth'
 import type { LoginCredentials } from '@/types/domain'
 
 export const loginTitle = 'Sistema de Voto Electrónico'
-export const loginSubtitle = 'Sistema de Voto Electrónico · Procesos Electorales'
+export const loginSubtitle = 'Procesos Electorales para la Universidad Central del Ecuador	'
 export const loginHint = 'Ingresa tus credenciales para continuar al proceso electoral.'
 
 export function useLoginForm(router: Router) {

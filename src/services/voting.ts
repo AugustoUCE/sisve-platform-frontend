@@ -30,9 +30,9 @@ export const biometricSteps: BiometricStep[] = [
 ]
 
 export const voterCandidates: VoterCandidate[] = [
-  { id: 1, name: 'Ana Rodríguez Vega', party: 'Lista 3 · Fuerza Estudiantil', description: 'Propone modernización de laboratorios, bienestar estudiantil y convenios internacionales.', tags: ['Tecnología', 'Becas', 'Inclusión'], avatar: '👩‍🎓' },
-  { id: 2, name: 'Carlos Méndez Torres', party: 'Lista 7 · Renovación UCE', description: 'Enfocado en reducción de costos académicos, transporte y cafetería universitaria.', tags: ['Economía', 'Transporte', 'Salud'], avatar: '👨‍🎓' },
-  { id: 3, name: 'Sofía Guerrero Pinto', party: 'Lista 12 · Unidos por la U', description: 'Prioriza conectividad, espacios de estudio y mayor participación en decisiones académicas.', tags: ['Infraestructura', 'Wi-Fi', 'Democracia'], avatar: '👩‍💼' }
+  { id: 1, name: 'Ana Rodríguez Vega', party: 'Lista 3 · Fuerza Estudiantil', office: 'Presidencia', description: 'Propone modernización de laboratorios, bienestar estudiantil y convenios internacionales.', tags: ['Tecnología', 'Becas', 'Inclusión'], avatar: '👩‍🎓' },
+  { id: 2, name: 'Carlos Méndez Torres', party: 'Lista 7 · Renovación UCE', office: 'Vicepresidencia', description: 'investigar colores para indicar procesos , demostracion de alertas Enfocado en reducción de costos académicos, transporte y cafetería universitaria.', tags: ['Economía', 'Transporte', 'Salud'], avatar: '👨‍🎓' },
+  { id: 3, name: 'Sofía Guerrero Pinto', party: 'Lista 12 · Unidos por la U', office: 'Vocalía', description: ' poner el boton en el centro y poner una pantalla de alerta de confirmar votoPrioriza conectividad, espacios de estudio y mayor participación en decisiones académicas.', tags: ['Infraestructura', 'Wi-Fi', 'Democracia'], avatar: '👩‍💼' }
 ]
 
 export async function verifyBiometric(): Promise<boolean> {

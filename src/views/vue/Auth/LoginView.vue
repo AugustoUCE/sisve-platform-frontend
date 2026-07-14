@@ -1,8 +1,8 @@
-<template src="../html/LoginView.html"></template>
+<template src="../../html/Auth/LoginView.html"></template>
 
 <script setup lang="ts">
 import { useRouter } from 'vue-router'
-import { loginHint, loginSubtitle, loginTitle, useLoginForm } from '../typescript/LoginView'
+import { loginHint, loginSubtitle, loginTitle, useLoginForm } from '../../typescript/Auth/LoginView'
 
 const router = useRouter()
 const { form, isSubmitting, errorMessage, submitLogin } = useLoginForm(router)
@@ -32,6 +32,11 @@ const { form, isSubmitting, errorMessage, submitLogin } = useLoginForm(router)
 
 .login-glow-b {
 	background: radial-gradient(circle at 88% 78%, rgba(212, 160, 33, 0.18), transparent 30%);
+}
+.logo-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .login-grid {

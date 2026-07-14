@@ -1,7 +1,7 @@
-<template src="../html/AuditView.html"></template>
+<template src="../../html/Audit/AuditView.html"></template>
 
 <script setup lang="ts">
-import { useAdminPanel } from '../typescript/AuditView'
+import { useAdminPanel } from '../../typescript/Audit/AuditView'
 
 const { query, activeRoute, filteredElections, metrics, actions, recentEvents, sidebarSections, setActiveRoute, handleQuickAction } = useAdminPanel()
 </script>

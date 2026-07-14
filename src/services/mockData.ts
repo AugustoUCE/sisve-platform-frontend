@@ -40,20 +40,7 @@ export const mockActiveElection = {
   estado: 'Activa'
 }
 
-export const mockResultStats: ResultSummaryStat[] = [
-  {
-    label: 'Personas que votaron',
-    value: '3,241',
-    subtext: 'votos registrados en el proceso',
-    accent: true
-  },
-  
-  {
-    label: 'Participación',
-    value: '67.4%',
-    subtext: 'con datos ficticios'
-  }
-]
+
 
 export const mockResultEntries: ResultEntry[] = [
   { id: '1', position: 1, name: 'Ana Rodríguez Vega', party: 'Lista 3 · Fuerza Estudiantil', votes: 1824, percentage: 41.8, highlighted: true },

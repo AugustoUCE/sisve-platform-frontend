@@ -47,7 +47,7 @@
       <div class="c-tags"><span v-for="tag in candidate.tags" :key="tag" class="c-tag">{{ tag }}</span></div>
       <div class="card-actions" v-if="isCandidateSelected(candidate.id)">
         <button class="btn-card btn-muted" type="button" @click.stop="selectCandidate(candidate.id)">Quitar selección</button>
-        <button class="btn-card btn-primary" type="button" @click.stop="submitCurrentBallot">Votar</button>
+        <!-- <button class="btn-card btn-primary" type="button" @click.stop="submitCurrentBallot">Votar</button> -->
       </div>
       <div class="selected-badge" v-else>Haz clic para seleccionar</div>
     </article>
@@ -61,7 +61,7 @@
     </div>
     <div class="null-vote-actions" v-if="nullVoteSelected">
       <button class="btn-card btn-muted" type="button" @click.stop="clearBlankVote">Quitar voto nulo</button>
-      <button class="btn-card btn-primary" type="button" @click.stop="submitCurrentBallot">Votar</button>
+      <!-- <button class="btn-card btn-primary" type="button" @click.stop="submitCurrentBallot">Votar</button> -->
     </div>
   </section>
 </div>

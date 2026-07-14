@@ -1,6 +1,6 @@
 import { requestJson } from './http'
 import type { ResultEntry, ResultSummaryStat, TimelineItem } from '@/types/domain'
-import { isMockDataEnabled, mockResultEntries, mockResultStats, mockTimeline } from './mockData'
+import { isMockDataEnabled, mockResultEntries, mockTimeline } from './mockData'
 
 interface BackendElectionResponse {
   idEleccion: number
@@ -21,7 +21,6 @@ interface BackendAuditEventResponse {
 }
 
 interface ResultsPayload {
-  stats: ResultSummaryStat[]
   entries: ResultEntry[]
   timeline: TimelineItem[]
 }
@@ -29,7 +28,6 @@ interface ResultsPayload {
 export async function fetchResults(): Promise<ResultsPayload> {
   if (isMockDataEnabled) {
     return {
-      stats: mockResultStats,
       entries: mockResultEntries,
       timeline: mockTimeline
     }
@@ -52,23 +50,7 @@ export async function fetchResults(): Promise<ResultsPayload> {
     voteEvents = []
   }
 
-  const stats: ResultSummaryStat[] = elections.length > 0 || voteEvents.length > 0
-    ? [
-        {
-          label: 'Personas que votaron',
-          value: String(voteEvents.length),
-          subtext: 'votos obtenidos del backend',
-          accent: true
-        },
-      
-        {
-          label: 'Elecciones activas',
-          value: String(elections.length),
-          subtext: 'procesos obtenidos del backend'
-        }
-      ]
-    : mockResultStats
-
+  
   const entries: ResultEntry[] = mockResultEntries
 
   const timeline: TimelineItem[] = voteEvents.length > 0
@@ -89,7 +71,6 @@ export async function fetchResults(): Promise<ResultsPayload> {
     : mockTimeline
 
   return {
-    stats,
     entries,
     timeline
   }
