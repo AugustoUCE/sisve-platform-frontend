@@ -9,8 +9,9 @@
       <strong>{{ loginTitle }}</strong>
       <p>{{ loginSubtitle }}</p>
     </div>
-
-    <img src="@/assets/Logo.png" alt="Sisve logo" width="400" height="400" />
+    <div class="logo-container">
+      <img src="@/assets/Logo.png" alt="Sisve logo" width="400" height="400" />
+    </div>
   </section>
 
   <section class="login-card">
@@ -38,11 +39,7 @@
         </div>
       </label>
 
-      <label class="remember-row">
-        <input v-model="form.remember" type="checkbox" />
-        <span class="check"></span>
-        <span>Recordar sesión</span>
-      </label>
+      
 
       <p v-if="errorMessage" class="error-message">{{ errorMessage }}</p>
 

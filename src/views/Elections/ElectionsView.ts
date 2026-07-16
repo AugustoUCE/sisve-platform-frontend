@@ -74,17 +74,24 @@ export function useResultsView() {
   }
 
   onMounted(async () => {
-    const results = await fetchResults()
-    //resultStats.value = results.stats
-    resultEntries.value = results.entries
-    participationTimeline.value = results.timeline
-    lastUpdate.value = new Intl.DateTimeFormat('es-EC', {
-      dateStyle: 'short',
-      timeStyle: 'short'
-    }).format(new Date())
+  const results = await fetchResults()
 
-    await loadCountdown()
-  })
+  //resultStats.value = results.stats
+  resultEntries.value = results.entries
+  participationTimeline.value = results.timeline
+
+  lastUpdate.value = new Intl.DateTimeFormat('es-EC', {
+    dateStyle: 'short',
+    timeStyle: 'short'
+  }).format(new Date())
+
+  await loadCountdown()
+
+  // Esperar a que la vista termine de renderizar
+  setTimeout(() => {
+    printCertificate()
+  }, 300)
+})
 
   onBeforeUnmount(() => {
     if (timerId) {
