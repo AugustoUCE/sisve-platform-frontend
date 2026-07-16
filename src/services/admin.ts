@@ -1,5 +1,6 @@
 import { requestJson, safeRequestJson } from './http'
 import type { AdminElectionRow, AdminMetric, AuditEvent, QuickAction } from '@/types/domain'
+import { isMockDataEnabled, mockAdminElections, mockAdminMetrics, mockAuditEvents, mockQuickActions } from './mockData'
 
 interface BackendElectionResponse {
   idEleccion: number
@@ -19,7 +20,7 @@ interface BackendAuditEventResponse {
   servicioOrigen: string
 }
 
-export const quickActions: QuickAction[] = []
+export const quickActions: QuickAction[] = mockQuickActions
 
 function mapElectionToRow(election: BackendElectionResponse): AdminElectionRow {
   return {
@@ -50,11 +51,23 @@ function mapAuditEventToRow(event: BackendAuditEventResponse): AuditEvent {
 }
 
 async function fetchActiveElections(): Promise<AdminElectionRow[]> {
-  const elections = await requestJson<BackendElectionResponse[]>('election', '/activas')
-  return elections.map(mapElectionToRow)
+  if (isMockDataEnabled) {
+    return mockAdminElections
+  }
+
+  try {
+    const elections = await requestJson<BackendElectionResponse[]>('election', '/activas')
+    return elections.length > 0 ? elections.map(mapElectionToRow) : mockAdminElections
+  } catch {
+    return mockAdminElections
+  }
 }
 
 async function fetchAuditEvents(): Promise<AuditEvent[]> {
+  if (isMockDataEnabled) {
+    return mockAuditEvents
+  }
+
   const serviceNames = ['auth-service', 'election-service', 'vote-service', 'audit-service']
 
   const batches = await Promise.all(
@@ -84,33 +97,35 @@ export async function fetchAdminDashboard() {
   const pendingElections = elections.filter(item => item.status === 'pending').length
   const closedElections = elections.filter(item => item.status === 'closed').length
 
-  const adminMetrics: AdminMetric[] = [
-    {
-      label: 'Elecciones activas',
-      value: String(activeElections),
-      delta: 'Procesos actualmente en curso',
-      tone: activeElections > 0 ? 'up' : 'neutral',
-      highlight: true
-    },
-    {
-      label: 'Elecciones programadas',
-      value: String(pendingElections),
-      delta: 'Pendientes de inicio',
-      tone: 'neutral'
-    },
-    {
-      label: 'Elecciones cerradas',
-      value: String(closedElections),
-      delta: 'Procesos finalizados',
-      tone: 'neutral'
-    },
-    {
-      label: 'Eventos de auditoría',
-      value: String(events.length),
-      delta: 'Últimos eventos recopilados',
-      tone: events.length > 0 ? 'up' : 'warn'
-    }
-  ]
+  const adminMetrics: AdminMetric[] = elections.length > 0 || events.length > 0
+    ? [
+        {
+          label: 'Elecciones activas',
+          value: String(activeElections),
+          delta: 'Procesos actualmente en curso',
+          tone: activeElections > 0 ? 'up' : 'neutral',
+          highlight: true
+        },
+        {
+          label: 'Elecciones programadas',
+          value: String(pendingElections),
+          delta: 'Pendientes de inicio',
+          tone: 'neutral'
+        },
+        {
+          label: 'Elecciones cerradas',
+          value: String(closedElections),
+          delta: 'Procesos finalizados',
+          tone: 'neutral'
+        },
+        {
+          label: 'Eventos de auditoría',
+          value: String(events.length),
+          delta: 'Últimos eventos recopilados',
+          tone: events.length > 0 ? 'up' : 'warn'
+        }
+      ]
+    : mockAdminMetrics
 
   return {
     metrics: adminMetrics,

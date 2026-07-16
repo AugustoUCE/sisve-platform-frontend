@@ -1,0 +1,67 @@
+<div class="dashboard-shell">
+  <section class="hero-panel">
+    <div class="hero-copy">
+      <p class="eyebrow">Dashboard Votante</p>
+      <h2>{{ dashboardTitle }}</h2>
+      <p>{{ dashboardSubtitle }}</p>
+    </div>
+
+    
+  </section>
+
+  <div class="dashboard-subbar">
+    <div class="election-meta">
+      <div class="meta-pill" v-for="meta in dashboardMeta" :key="meta">{{ meta }}</div>
+    </div>
+    <div class="hero-metric">
+      <span>Tiempo restante de sesión:</span>
+      <strong>{{ timerText }}</strong>
+    </div>
+  </div>
+
+  <div class="tabs">
+    <button v-for="(tab, index) in dashboardTabs" :key="tab" class="tab" :class="{ active: selectedTab === index }" type="button" @click="setTab(index)">{{ tab }}</button>
+  </div>
+
+  <section class="vote-banner" :class="{ active: canSubmit }">
+    <div>
+      <strong>{{ selectedLabel }}</strong>
+      <p>{{ selectedName }}</p>
+    </div>
+    <button class="vote-banner-btn" type="button" :disabled="!canSubmit" @click="submitCurrentBallot">Emitir voto</button>
+  </section>
+
+  <section class="candidates">
+    <article
+      v-for="candidate in visibleCandidates"
+      :key="candidate.id"
+      class="c-card"
+      :class="{ selected: isCandidateSelected(candidate.id) }"
+      @click="selectCandidate(candidate.id)"
+    >
+      <div class="c-number">{{ candidate.id }}</div>
+      <div class="c-avatar">{{ candidate.avatar }}</div>
+      <div class="c-name">{{ candidate.name }}</div>
+      <div class="c-party">{{ candidate.party }}</div>
+      <div class="c-desc">{{ candidate.description }}</div>
+      <div class="c-tags"><span v-for="tag in candidate.tags" :key="tag" class="c-tag">{{ tag }}</span></div>
+      <div class="card-actions" v-if="isCandidateSelected(candidate.id)">
+        <button class="btn-card btn-muted" type="button" @click.stop="selectCandidate(candidate.id)">Quitar selección</button>
+        <!-- <button class="btn-card btn-primary" type="button" @click.stop="submitCurrentBallot">Votar</button> -->
+      </div>
+      <div class="selected-badge" v-else>Haz clic para seleccionar</div>
+    </article>
+  </section>
+
+  <section class="null-vote-card" :class="{ selected: nullVoteSelected }" @click="selectBlank">
+    <div>
+      <p class="null-vote-title">Voto nulo</p>
+      <h3>Deseo anular mi voto</h3>
+      <p>Esta opción limpia la selección actual y registra una papeleta nula.</p>
+    </div>
+    <div class="null-vote-actions" v-if="nullVoteSelected">
+      <button class="btn-card btn-muted" type="button" @click.stop="clearBlankVote">Quitar voto nulo</button>
+      <!-- <button class="btn-card btn-primary" type="button" @click.stop="submitCurrentBallot">Votar</button> -->
+    </div>
+  </section>
+</div>

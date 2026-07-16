@@ -57,6 +57,7 @@ export interface VoterCandidate {
   id: number | string
   name: string
   party: string
+  office: string
   description: string
   tags: string[]
   avatar: string

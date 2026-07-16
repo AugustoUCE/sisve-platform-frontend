@@ -1,0 +1,70 @@
+<div class="results-shell">
+  <div class="bg-layer"></div>
+  <div class="bg-dots"></div>
+
+  
+
+  <main class="results-main">
+    <div class="page-header">
+      <div>
+        <h2>Gracias por participar</h2>
+        <p>Tu voto fue registrado y ahora puedes imprimir el certificado del voto.</p>
+      </div>
+      <div class="last-update">↻ {{ lastUpdate }}</div>
+    </div>
+
+    <div v-if="selectionSummary" class="selection-banner">
+      <strong>Resumen de tu voto:</strong> {{ selectionSummary }}
+    </div>
+
+    <div class="stats-row">
+      <article v-for="stat in resultStats" :key="stat.label" class="stat-card" :class="{ accent: stat.accent }">
+        <div class="label">{{ stat.label }}</div>
+        <div class="value">{{ stat.value }}</div>
+        <div class="sub">{{ stat.subtext }}</div>
+      </article>
+    </div>
+
+    <section class="countdown-banner">
+      <div>
+        <span class="eyebrow">Tiempo restante para cerrar</span>
+        <strong>{{ timeRemaining }}</strong>
+      </div>
+      <p>La jornada electoral permanece abierta hasta el cierre oficial.</p>
+    </section>
+
+    <div class="section-title">
+      <h3>Certificado de voto</h3>
+      <div class="line"></div>
+    </div>
+
+    <div class="certificate-card">
+      <div class="certificate-top">
+        <div>
+          <span class="eyebrow">Certificado electrónico</span>
+          <h3>Constancia de voto emitido quitar estadistica y mas minimalista , mandar imprimir automatico , es un sistema cerrado  </h3>
+        </div>
+        <button class="print-button" type="button" @click="printCertificate">Imprimir certificado</button>
+      </div>
+
+      <div class="certificate-body">
+        <div class="certificate-seal">✓</div>
+        <div class="certificate-copy">
+          <p><strong>Votante:</strong> {{ voterProfile?.fullName ?? 'Votante registrado' }}</p>
+          <p><strong>Documento:</strong> {{ voterProfile?.code ?? 'No disponible' }}</p>
+          <p><strong>Estado del voto:</strong> {{ ballot?.nullVote ? 'Voto nulo' : 'Voto emitido correctamente' }}</p>
+          <p><strong>Selección:</strong> {{ certificateCandidateNames.length > 0 ? certificateCandidateNames.join(', ') : 'Voto nulo' }}</p>
+          <p><strong>Fecha de emisión:</strong> {{ lastUpdate }}</p>
+        </div>
+      </div>
+
+      <div class="certificate-footer">
+        <span>Este documento confirma que el voto fue registrado de forma correcta.</span>
+      </div>
+    </div>
+
+    
+  </main>
+
+  <footer class="results-footer">Sistema de Voto Electrónico · Certificado sujeto a verificación del proceso</footer>
+</div>

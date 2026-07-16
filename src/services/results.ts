@@ -1,5 +1,6 @@
 import { requestJson } from './http'
 import type { ResultEntry, ResultSummaryStat, TimelineItem } from '@/types/domain'
+import { isMockDataEnabled, mockResultEntries, mockTimeline } from './mockData'
 
 interface BackendElectionResponse {
   idEleccion: number
@@ -20,13 +21,24 @@ interface BackendAuditEventResponse {
 }
 
 interface ResultsPayload {
-  stats: ResultSummaryStat[]
   entries: ResultEntry[]
   timeline: TimelineItem[]
 }
 
 export async function fetchResults(): Promise<ResultsPayload> {
-  const elections = await requestJson<BackendElectionResponse[]>('election', '/activas')
+  if (isMockDataEnabled) {
+    return {
+      entries: mockResultEntries,
+      timeline: mockTimeline
+    }
+  }
+
+  let elections: BackendElectionResponse[] = []
+  try {
+    elections = await requestJson<BackendElectionResponse[]>('election', '/activas')
+  } catch {
+    elections = []
+  }
 
   let voteEvents: BackendAuditEventResponse[] = []
   try {
@@ -38,39 +50,27 @@ export async function fetchResults(): Promise<ResultsPayload> {
     voteEvents = []
   }
 
-  const stats: ResultSummaryStat[] = [
-    {
-      label: 'Elecciones activas',
-      value: String(elections.length),
-      subtext: 'procesos obtenidos del backend',
-      accent: true
-    },
-    {
-      label: 'Eventos de voto',
-      value: String(voteEvents.length),
-      subtext: 'registrados por audit-service'
-    }
-  ]
+  
+  const entries: ResultEntry[] = mockResultEntries
 
-  const entries: ResultEntry[] = []
-
-  const timeline: TimelineItem[] = voteEvents
-    .sort(
-      (left, right) =>
-        new Date(right.fechaEvento).getTime() - new Date(left.fechaEvento).getTime()
-    )
-    .slice(0, 8)
-    .map((event, index) => ({
-      id: String(event.idAuditoria),
-      title: `${new Date(event.fechaEvento).toLocaleString('es-EC')} — ${event.tipoEvento}`,
-      detail: [event.descripcion ?? '', event.ipOrigen ? `IP ${event.ipOrigen}` : '']
-        .filter(Boolean)
-        .join(' · '),
-      tone: index === 0 ? 'success' : 'info'
-    }))
+  const timeline: TimelineItem[] = voteEvents.length > 0
+    ? voteEvents
+        .sort(
+          (left, right) =>
+            new Date(right.fechaEvento).getTime() - new Date(left.fechaEvento).getTime()
+        )
+        .slice(0, 8)
+        .map((event, index) => ({
+          id: String(event.idAuditoria),
+          title: `${new Date(event.fechaEvento).toLocaleString('es-EC')} — ${event.tipoEvento}`,
+          detail: [event.descripcion ?? '', event.ipOrigen ? `IP ${event.ipOrigen}` : '']
+            .filter(Boolean)
+            .join(' · '),
+          tone: index === 0 ? 'success' : 'info'
+        }))
+    : mockTimeline
 
   return {
-    stats,
     entries,
     timeline
   }

@@ -1,6 +1,7 @@
 import { requestJson } from './http'
 import { clearStoredSession, getStoredSession } from './session'
 import type { BiometricStep, VoterCandidate } from '@/types/domain'
+import { isMockDataEnabled, mockActiveElection } from './mockData'
 
 interface ActiveElectionResponse {
   idEleccion: number
@@ -29,9 +30,9 @@ export const biometricSteps: BiometricStep[] = [
 ]
 
 export const voterCandidates: VoterCandidate[] = [
-  { id: 1, name: 'Ana Rodríguez Vega', party: 'Lista 3 · Fuerza Estudiantil', description: 'Propone modernización de laboratorios, bienestar estudiantil y convenios internacionales.', tags: ['Tecnología', 'Becas', 'Inclusión'], avatar: '👩‍🎓' },
-  { id: 2, name: 'Carlos Méndez Torres', party: 'Lista 7 · Renovación UCE', description: 'Enfocado en reducción de costos académicos, transporte y cafetería universitaria.', tags: ['Economía', 'Transporte', 'Salud'], avatar: '👨‍🎓' },
-  { id: 3, name: 'Sofía Guerrero Pinto', party: 'Lista 12 · Unidos por la U', description: 'Prioriza conectividad, espacios de estudio y mayor participación en decisiones académicas.', tags: ['Infraestructura', 'Wi-Fi', 'Democracia'], avatar: '👩‍💼' }
+  { id: 1, name: 'Ana Rodríguez Vega', party: 'Lista 3 · Fuerza Estudiantil', office: 'Presidencia', description: 'Propone modernización de laboratorios, bienestar estudiantil y convenios internacionales.', tags: ['Tecnología', 'Becas', 'Inclusión'], avatar: '👩‍🎓' },
+  { id: 2, name: 'Carlos Méndez Torres', party: 'Lista 7 · Renovación UCE', office: 'Vicepresidencia', description: 'investigar colores para indicar procesos , demostracion de alertas Enfocado en reducción de costos académicos, transporte y cafetería universitaria.', tags: ['Economía', 'Transporte', 'Salud'], avatar: '👨‍🎓' },
+  { id: 3, name: 'Sofía Guerrero Pinto', party: 'Lista 12 · Unidos por la U', office: 'Vocalía', description: ' poner el boton en el centro y poner una pantalla de alerta de confirmar votoPrioriza conectividad, espacios de estudio y mayor participación en decisiones académicas.', tags: ['Infraestructura', 'Wi-Fi', 'Democracia'], avatar: '👩‍💼' }
 ]
 
 export async function verifyBiometric(): Promise<boolean> {
@@ -39,6 +40,10 @@ export async function verifyBiometric(): Promise<boolean> {
 
   if (!session) {
     return false
+  }
+
+  if (isMockDataEnabled) {
+    return true
   }
 
   try {
@@ -56,19 +61,38 @@ export async function verifyBiometric(): Promise<boolean> {
 }
 
 export async function fetchActiveElection(): Promise<ActiveElectionResponse | null> {
+  if (isMockDataEnabled) {
+    return mockActiveElection
+  }
+
   try {
     const elections = await requestJson<ActiveElectionResponse[]>('election', '/activas')
     return elections[0] ?? null
   } catch {
-    return null
+    return mockActiveElection
   }
 }
 
-export async function submitVote(payload: { idEleccion: number; idCandidato: number; idVotante: number }): Promise<BackendVoteResponse> {
+export async function submitVote(payload: { idEleccion: number; candidateIds: number[]; nullVote: boolean; idVotante: number }): Promise<BackendVoteResponse> {
   const session = getStoredSession()
 
   if (!session) {
     throw new Error('Debes iniciar sesión antes de votar.')
+  }
+
+  if (payload.nullVote && !isMockDataEnabled) {
+    throw new Error('El backend actual no registra voto nulo.')
+  }
+
+  if (isMockDataEnabled) {
+    clearStoredSession()
+    return {
+      mensaje: payload.nullVote
+        ? 'Voto nulo registrado correctamente en modo simulación.'
+        : 'Voto registrado correctamente en modo simulación.',
+      hashActual: `mock-hash-${Date.now()}`,
+      fechaRegistro: new Date().toISOString()
+    }
   }
 
   const response = await requestJson<BackendVoteResponse>('vote', '/votos', {

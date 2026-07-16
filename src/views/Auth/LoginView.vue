@@ -1,0 +1,305 @@
+<template src="../../html/Auth/LoginView.html"></template>
+
+<script setup lang="ts">
+import { useRouter } from 'vue-router'
+import { loginHint, loginSubtitle, loginTitle, useLoginForm } from '../../typescript/Auth/LoginView'
+
+const router = useRouter()
+const { form, isSubmitting, errorMessage, submitLogin } = useLoginForm(router)
+</script>
+
+<style scoped>
+.login-shell {
+	min-height: 100vh;
+	display: grid;
+	grid-template-columns: minmax(0, 1.1fr) minmax(340px, 460px);
+	gap: 28px;
+	padding: 28px;
+	position: relative;
+	overflow: hidden;
+}
+
+.login-glow,
+.login-grid {
+	position: fixed;
+	inset: 0;
+	pointer-events: none;
+}
+
+.login-glow-a {
+	background: radial-gradient(circle at 12% 18%, rgba(47, 126, 199, 0.32), transparent 34%);
+}
+
+.login-glow-b {
+	background: radial-gradient(circle at 88% 78%, rgba(212, 160, 33, 0.18), transparent 30%);
+}
+.logo-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.login-grid {
+	background-image: linear-gradient(rgba(255, 255, 255, 0.035) 1px, transparent 1px), linear-gradient(90deg, rgba(255, 255, 255, 0.035) 1px, transparent 1px);
+	background-size: 44px 44px;
+	mask-image: radial-gradient(circle at center, black 45%, transparent 100%);
+}
+
+.hero-panel,
+.login-card {
+	position: relative;
+	z-index: 1;
+	border: 1px solid rgba(255, 255, 255, 0.12);
+	border-radius: 28px;
+	background: rgba(7, 16, 34, 0.62);
+	backdrop-filter: blur(22px);
+	box-shadow: 0 32px 80px rgba(0, 0, 0, 0.35);
+}
+
+.hero-panel {
+	padding: 34px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	min-height: calc(100vh - 56px);
+}
+
+.brand-mark {
+	max-width: 460px;
+}
+
+.brand-chip {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	padding: 8px 12px;
+	border-radius: 999px;
+	background: linear-gradient(135deg, var(--blue), var(--sky));
+	font-weight: 700;
+	letter-spacing: 0.12em;
+}
+
+.brand-mark strong {
+	display: block;
+	margin-top: 18px;
+	font-family: 'Playfair Display', serif;
+	font-size: clamp(2rem, 4vw, 3.4rem);
+}
+
+.brand-mark p,
+.hero-copy p,
+.hero-copy li,
+.card-footer,
+.remember-row,
+.field span,
+.status-pill {
+	color: rgba(255, 255, 255, 0.72);
+}
+
+.hero-copy h1 {
+	margin: 0 0 12px;
+	font-family: 'Playfair Display', serif;
+	font-size: clamp(2.4rem, 5vw, 4.8rem);
+	line-height: 0.98;
+}
+
+.hero-copy ul {
+	margin: 20px 0 0;
+	padding-left: 20px;
+	display: grid;
+	gap: 10px;
+}
+
+.login-card {
+	padding: 28px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.card-header {
+	display: flex;
+	align-items: start;
+	justify-content: space-between;
+	gap: 12px;
+	margin-bottom: 22px;
+}
+
+.eyebrow {
+	display: inline-block;
+	text-transform: uppercase;
+	letter-spacing: 0.16em;
+	font-size: 0.72rem;
+	color: rgba(255, 255, 255, 0.45);
+	margin-bottom: 6px;
+}
+
+.card-header h2 {
+	margin: 0;
+	font-family: 'Playfair Display', serif;
+	font-size: 2rem;
+}
+
+.status-pill {
+	padding: 8px 12px;
+	border-radius: 999px;
+	background: rgba(255, 255, 255, 0.08);
+	border: 1px solid rgba(255, 255, 255, 0.08);
+	font-size: 0.78rem;
+}
+
+.login-form {
+	display: grid;
+	gap: 16px;
+}
+
+.field {
+	display: grid;
+	gap: 8px;
+}
+
+.field span {
+	font-size: 0.75rem;
+	text-transform: uppercase;
+	letter-spacing: 0.12em;
+}
+
+.input-wrap {
+	position: relative;
+}
+
+.input-wrap svg {
+	position: absolute;
+	left: 14px;
+	top: 50%;
+	transform: translateY(-50%);
+	width: 18px;
+	height: 18px;
+	fill: none;
+	stroke: white;
+	stroke-width: 2;
+	opacity: 0.5;
+}
+
+.input-wrap input {
+	width: 100%;
+	min-height: 52px;
+	padding: 0 16px 0 44px;
+	border-radius: 16px;
+	border: 1px solid rgba(255, 255, 255, 0.12);
+	background: rgba(255, 255, 255, 0.06);
+	color: white;
+	outline: none;
+}
+
+.input-wrap input:focus {
+	border-color: rgba(47, 126, 199, 0.65);
+	box-shadow: 0 0 0 3px rgba(47, 126, 199, 0.18);
+}
+
+.remember-row {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	cursor: pointer;
+	font-size: 0.9rem;
+}
+
+.remember-row input {
+	position: absolute;
+	opacity: 0;
+	pointer-events: none;
+}
+
+.check {
+	width: 18px;
+	height: 18px;
+	border-radius: 5px;
+	border: 1.5px solid rgba(255, 255, 255, 0.24);
+	flex-shrink: 0;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.remember-row input:checked + .check {
+	background: var(--sky);
+	border-color: var(--sky);
+}
+
+.remember-row input:checked + .check::after {
+	content: '';
+	width: 8px;
+	height: 5px;
+	border-left: 2px solid white;
+	border-bottom: 2px solid white;
+	transform: rotate(-45deg) translateY(-1px);
+}
+
+.error-message {
+	margin: 0;
+	padding: 12px 14px;
+	border-radius: 14px;
+	background: rgba(192, 0, 30, 0.12);
+	color: #ff9494;
+}
+
+.submit-button {
+	min-height: 52px;
+	border: none;
+	border-radius: 16px;
+	background: linear-gradient(135deg, var(--blue), var(--sky));
+	color: white;
+	font-weight: 700;
+	cursor: pointer;
+	transition: transform 0.15s ease, filter 0.15s ease;
+}
+
+.submit-button:hover:not(:disabled) {
+	transform: translateY(-1px);
+	filter: brightness(1.08);
+}
+
+.submit-button:disabled {
+	opacity: 0.6;
+	cursor: not-allowed;
+}
+
+.card-footer {
+	margin-top: 18px;
+	display: flex;
+	justify-content: space-between;
+	gap: 12px;
+	font-size: 0.86rem;
+}
+
+.card-footer a {
+	color: var(--sky);
+}
+
+@media (max-width: 980px) {
+	.login-shell {
+		grid-template-columns: 1fr;
+	}
+
+	.hero-panel {
+		min-height: unset;
+	}
+}
+
+@media (max-width: 640px) {
+	.login-shell {
+		padding: 16px;
+	}
+
+	.hero-panel,
+	.login-card {
+		padding: 22px;
+		border-radius: 22px;
+	}
+
+	.card-footer {
+		flex-direction: column;
+	}
+}
+</style>

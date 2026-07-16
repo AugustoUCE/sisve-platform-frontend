@@ -3,9 +3,9 @@ import type { Router } from 'vue-router'
 import { login } from '@/services/auth'
 import type { LoginCredentials } from '@/types/domain'
 
-export const loginTitle = 'Universidad Central del Ecuador'
-export const loginSubtitle = 'Sistema de Voto Electrónico · Procesos Electorales'
-export const loginHint = 'Ingresa tus credenciales institucionales para acceder a tu papeleta electoral.'
+export const loginTitle = 'Sistema de Voto Electrónico'
+export const loginSubtitle = 'Procesos Electorales para la Universidad Central del Ecuador	'
+export const loginHint = 'Ingresa tus credenciales para continuar al proceso electoral.'
 
 export function useLoginForm(router: Router) {
 	const form = reactive<LoginCredentials>({
@@ -20,7 +20,7 @@ export function useLoginForm(router: Router) {
 		errorMessage.value = ''
 
 		if (!form.cedula.trim() || !form.correoInstitucional.trim()) {
-			errorMessage.value = 'Completa cédula y correo institucional antes de continuar.'
+			errorMessage.value = 'Completa documento y correo antes de continuar.'
 			return
 		}
 
