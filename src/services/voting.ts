@@ -1,6 +1,6 @@
 import { requestJson } from './http'
 import { clearStoredSession, getStoredSession } from './session'
-import type { BiometricStep, VoterCandidate } from '@/types/domain'
+import type { BiometricStep, VoterCandidate } from '@/interfaces/domain'
 import { isMockDataEnabled, mockActiveElection } from './mockData'
 
 interface ActiveElectionResponse {

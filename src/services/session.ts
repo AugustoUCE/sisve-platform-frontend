@@ -1,4 +1,4 @@
-import type { SessionResponse } from '@/types/domain'
+import type { SessionResponse } from '@/interfaces/domain'
 
 const localStorageKey = 'sisve.session'
 const sessionStorageKey = 'sisve.session.temp'

@@ -7,7 +7,7 @@ import type {
   ResultSummaryStat,
   SessionResponse,
   TimelineItem
-} from '@/types/domain'
+} from '@/interfaces/domain'
 
 export const isMockDataEnabled = import.meta.env.DEV || import.meta.env.VITE_USE_MOCK_DATA === 'true'
 

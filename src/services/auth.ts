@@ -1,6 +1,6 @@
 import { requestJson } from './http'
 import { saveSession } from './session'
-import type { LoginCredentials, SessionResponse } from '@/types/domain'
+import type { LoginCredentials, SessionResponse } from '@/interfaces/domain'
 import { createMockSession, isMockDataEnabled } from './mockData'
 
 interface BackendLoginResponse {

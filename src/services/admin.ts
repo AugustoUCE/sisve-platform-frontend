@@ -1,5 +1,5 @@
 import { requestJson, safeRequestJson } from './http'
-import type { AdminElectionRow, AdminMetric, AuditEvent, QuickAction } from '@/types/domain'
+import type { AdminElectionRow, AdminMetric, AuditEvent, QuickAction } from '@/interfaces/domain'
 import { isMockDataEnabled, mockAdminElections, mockAdminMetrics, mockAuditEvents, mockQuickActions } from './mockData'
 
 interface BackendElectionResponse {

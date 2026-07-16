@@ -1,7 +1,7 @@
 import { reactive, ref } from 'vue'
 import type { Router } from 'vue-router'
 import { login } from '@/services/auth'
-import type { LoginCredentials } from '@/types/domain'
+import type { LoginCredentials } from '@/interfaces/domain'
 
 export const loginTitle = 'Sistema de Voto Electrónico'
 export const loginSubtitle = 'Procesos Electorales para la Universidad Central del Ecuador	'

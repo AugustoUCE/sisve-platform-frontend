@@ -1,5 +1,5 @@
 import { requestJson } from './http'
-import type { ResultEntry, ResultSummaryStat, TimelineItem } from '@/types/domain'
+import type { ResultEntry, ResultSummaryStat, TimelineItem } from '@/interfaces/domain'
 import { isMockDataEnabled, mockResultEntries, mockTimeline } from './mockData'
 
 interface BackendElectionResponse {

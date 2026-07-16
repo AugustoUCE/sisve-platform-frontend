@@ -1,5 +1,5 @@
 import { computed, onMounted, ref } from 'vue'
-import type { AdminElectionRow, AdminMetric, AuditEvent, QuickAction } from '@/types/domain'
+import type { AdminElectionRow, AdminMetric, AuditEvent, QuickAction } from '@/interfaces/domain'
 import { quickActions, fetchAdminDashboard } from '@/services/admin'
 
 const sidebarSections = [

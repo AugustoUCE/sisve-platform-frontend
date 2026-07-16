@@ -3,7 +3,7 @@ import { fetchActiveElection } from '@/services/voting'
 import { fetchResults } from '@/services/results'
 import { voterCandidates } from '@/services/voting'
 import { useVoteFlowStore } from '@/stores/voteFlow'
-import type { ResultEntry, ResultSummaryStat, TimelineItem } from '@/types/domain'
+import type { ResultEntry, ResultSummaryStat, TimelineItem } from '@/interfaces/domain'
 
 export const resultTabs = ['Presidente Estudiantil', 'Vicepresidente', 'Vocal Principal']
 
