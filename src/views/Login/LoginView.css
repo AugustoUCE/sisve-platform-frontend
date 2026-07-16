@@ -1,14 +1,3 @@
-<template src="../../html/Auth/LoginView.html"></template>
-
-<script setup lang="ts">
-import { useRouter } from 'vue-router'
-import { loginHint, loginSubtitle, loginTitle, useLoginForm } from '../../typescript/Auth/LoginView'
-
-const router = useRouter()
-const { form, isSubmitting, errorMessage, submitLogin } = useLoginForm(router)
-</script>
-
-<style scoped>
 .login-shell {
 	min-height: 100vh;
 	display: grid;
@@ -302,4 +291,3 @@ const { form, isSubmitting, errorMessage, submitLogin } = useLoginForm(router)
 		flex-direction: column;
 	}
 }
-</style>

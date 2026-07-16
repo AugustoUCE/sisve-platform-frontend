@@ -1,4 +1,5 @@
-<div class="layout">
+<template>
+    <div class="layout">
   <div class="bg-layer"></div>
   <div class="bg-dots"></div>
 
@@ -121,3 +122,11 @@
     </div>
   </div>
 </div>
+</template>
+
+<script setup lang="ts">
+import { useAdminPanel } from '../Auditoria/AuditView'
+
+const { query, activeRoute, filteredElections, metrics, actions, recentEvents, sidebarSections, setActiveRoute, handleQuickAction } = useAdminPanel()
+</script>
+

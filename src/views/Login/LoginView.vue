@@ -1,4 +1,6 @@
-<div class="login-shell">
+
+<template>
+	<div class="login-shell">
   <div class="login-glow login-glow-a"></div>
   <div class="login-glow login-glow-b"></div>
   <div class="login-grid"></div>
@@ -54,3 +56,13 @@
     </footer>
   </section>
 </div>
+</template>
+
+<script setup lang="ts">
+import { useRouter } from 'vue-router'
+import { loginHint, loginSubtitle, loginTitle, useLoginForm } from '../Login/LoginView'
+
+const router = useRouter()
+const { form, isSubmitting, errorMessage, submitLogin } = useLoginForm(router)
+</script>
+<style src="./LoginView.css"></style>

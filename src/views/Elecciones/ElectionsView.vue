@@ -1,4 +1,5 @@
-<div class="results-shell">
+<template>
+	<div class="results-shell">
   <div class="bg-layer"></div>
   <div class="bg-dots"></div>
 
@@ -68,3 +69,12 @@
 
   <footer class="results-footer">Sistema de Voto Electrónico · Certificado sujeto a verificación del proceso</footer>
 </div>
+</template>
+
+<script setup lang="ts">
+import { useResultsView } from './ElectionsView'
+
+const { lastUpdate, timeRemaining, displayEntries, resultStats, participationTimeline, selectionSummary, ballot, voterProfile, certificateCandidateNames, printCertificate } = useResultsView()
+</script>
+
+<style src="./ElectionsView.css"></style>

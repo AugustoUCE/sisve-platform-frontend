@@ -1,4 +1,5 @@
-<SectionCard :title="`Detalle de elección ${id}`" eyebrow="Proceso electoral">
+<template>
+    <SectionCard :title="`Detalle de elección ${id}`" eyebrow="Proceso electoral">
   <div class="detail-grid">
     <article class="detail-box">
       <h3>Contexto</h3>
@@ -10,3 +11,11 @@
     </article>
   </div>
 </SectionCard>
+</template>
+
+<script setup lang="ts">
+import SectionCard from '@/components/SectionCard.vue'
+import type { ElectionDetailProps } from './ElectionDetailView'
+
+defineProps<ElectionDetailProps>()
+</script>

@@ -1,12 +1,3 @@
-<template src="../../html/Elections/ElectionsView.html"></template>
-
-<script setup lang="ts">
-import { useResultsView } from '../../typescript/Elections/ElectionsView'
-
-const { lastUpdate, timeRemaining, displayEntries, resultStats, participationTimeline, selectionSummary, ballot, voterProfile, certificateCandidateNames, printCertificate } = useResultsView()
-</script>
-
-<style scoped>
 .results-shell {
 	min-height: 100vh;
 	padding: 28px;
@@ -222,4 +213,3 @@ const { lastUpdate, timeRemaining, displayEntries, resultStats, participationTim
 		grid-template-columns: 44px 1fr;
 	}
 }
-</style>

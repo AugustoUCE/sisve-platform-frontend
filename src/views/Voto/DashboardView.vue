@@ -1,4 +1,5 @@
-<div class="dashboard-shell">
+<template>
+	<div class="dashboard-shell">
   <section class="hero-panel">
     <div class="hero-copy">
       <p class="eyebrow">Dashboard Votante</p>
@@ -36,8 +37,8 @@
       v-for="candidate in visibleCandidates"
       :key="candidate.id"
       class="c-card"
-      :class="{ selected: isCandidateSelected(candidate.id) }"
-      @click="selectCandidate(candidate.id)"
+      :class="{ selected: isCandidateSelected(Number(candidate.id)) }"
+      @click="selectCandidate(Number(candidate.id))"
     >
       <div class="c-number">{{ candidate.id }}</div>
       <div class="c-avatar">{{ candidate.avatar }}</div>
@@ -45,8 +46,8 @@
       <div class="c-party">{{ candidate.party }}</div>
       <div class="c-desc">{{ candidate.description }}</div>
       <div class="c-tags"><span v-for="tag in candidate.tags" :key="tag" class="c-tag">{{ tag }}</span></div>
-      <div class="card-actions" v-if="isCandidateSelected(candidate.id)">
-        <button class="btn-card btn-muted" type="button" @click.stop="selectCandidate(candidate.id)">Quitar selección</button>
+      <div class="card-actions" v-if="isCandidateSelected(Number(candidate.id))">
+        <button class="btn-card btn-muted" type="button" @click.stop="selectCandidate(Number(candidate.id))">Quitar selección</button>
         <!-- <button class="btn-card btn-primary" type="button" @click.stop="submitCurrentBallot">Votar</button> -->
       </div>
       <div class="selected-badge" v-else>Haz clic para seleccionar</div>
@@ -65,3 +66,14 @@
     </div>
   </section>
 </div>
+</template>
+
+<script setup lang="ts">
+import { useRouter } from 'vue-router'
+import { dashboardMeta, dashboardSubtitle, dashboardTabs, dashboardTitle, useVoterBoard } from '../Voto/DashboardView'
+
+const router = useRouter()
+const { selectedTab, voterProfile, timerText, selectedName, selectedLabel, canSubmit, setTab, selectCandidate, isCandidateSelected, selectBlank, clearBlankVote, submitCurrentBallot, visibleCandidates, nullVoteSelected } = useVoterBoard(router)
+</script>
+
+<style src="../Voto/DashboardView.css" ></style>
