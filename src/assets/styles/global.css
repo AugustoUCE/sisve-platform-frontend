@@ -61,7 +61,7 @@
     min-height:100vh;
 
 }
-.login-page{
+.linkme-card{
 
     width: 50%;
 
@@ -82,43 +82,3 @@
     color: white;
 
 }
-/*el cuadro principal de inicio de sesión*/
-/*
-.hero{
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    position: relative;
-    height:50%;
-    width:25%;
-    text-align: center;
-    padding: 3rem;
-    border-radius: 30px;
-    background: linear-gradient(
-        135deg,
-        rgba(255,255,255,.12),
-        rgba(255,255,255,.04)
-    );
-    /*efecto de desenfoque del fondo*/
-   /* backdrop-filter: blur(25px);
-    -webkit-backdrop-filter: blur(25px);
-
-    border: 1px solid rgba(255,255,255,.18);
-
-    box-shadow:
-        0 20px 45px rgba(0,0,0,.35);
-
-}
-
-
-
-
-.login-panel{
-
-    width:0;
-
-    opacity:0;
-    transition: all .5s ease-in-out;
-
-}*/
