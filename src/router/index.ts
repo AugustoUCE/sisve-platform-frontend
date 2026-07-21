@@ -15,6 +15,7 @@ const router = createRouter({
             component:LoginView
 
         }
+   
 
     ]
 
