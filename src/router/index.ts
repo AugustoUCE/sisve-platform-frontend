@@ -1,6 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 
-import LoginView from '@/views/Login/LoginView.vue'
+import FundSisveView from '@/views/FundSisveView.vue'
 
 const router = createRouter({
 
@@ -12,10 +12,12 @@ const router = createRouter({
 
             path:'/',
 
-            component:LoginView
+            component:FundSisveView
 
-        }
-   
+
+        },
+        
+
 
     ]
 

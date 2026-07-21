@@ -1,0 +1,36 @@
+
+:root {
+    /*Colores principales*/
+    --color-primary: #2563EB;
+  --color-primary-hover: #1D4ED8;
+  --color-primary-light: #DBEAFE;
+
+  --color-secondary: #0EA5E9;
+  --color-accent: #06B6D4;
+
+    /*fondo*/
+
+   --color-background: #F8FAFC;
+  --color-surface: #FFFFFF;
+  --color-surface-secondary: #F1F5F9;
+
+    /*textos*/
+
+     --color-text: #1E293B;
+  --color-text-secondary: #64748B;
+  --color-text-light: #94A3B8;
+
+    /*bordes*/
+
+    --color-border: #CBD5E1;
+  --color-divider: #E2E8F0;
+
+    /*color de estados*/
+      --color-success: #16A34A;
+  --color-warning: #F59E0B;
+  --color-danger: #DC2626;
+  --color-info: #0EA5E9;
+
+    /*shaders*/
+    --shadow-light: rgba(15, 23, 42, 0.08);
+}

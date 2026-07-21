@@ -1,6 +1,15 @@
 <template   >
-  <div class="fund-sisve">
-    hello fund-sisve
+ <div class="app-background">
+
+    <!-- Efectos decorativos -->
+    <div class="bg-gradient"></div>
+    <div class="bg-dots"></div>
+
+    <!-- Contenido -->
+    <div class="app-content">
+      <slot />
+    </div>
+
   </div>
   
 </template>
