@@ -6,8 +6,9 @@
 
     <!-- Contenido principal -->
     <main class="app-content">
-      <section class="linkme-card">
+      <section class="linkme-card" >
           <!-- Aquí cambia LoginView por HomeView -->
+
         <RouterView />
       </section>
     </main>

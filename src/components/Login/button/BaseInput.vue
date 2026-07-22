@@ -1,38 +1,52 @@
 <template>
-  <div class="input-group">
-    <label v-if="label" class="input-label">
-      {{ label }}
-    </label>
+<div class="input-container">
 
-    <input
-      :value="modelValue"
-      :type="type"
-      :placeholder="placeholder"
-      :disabled="disabled"
-      class="base-input"
-      @input="$emit('update:modelValue', $event.target.value)"
-    />
+        <label
+            v-if="label"
+            class="input-label"
+            :for="id"
+        >
+            {{ label }}
+        </label>
 
-    <small v-if="hint" class="input-hint">
-      {{ hint }}
-    </small>
-  </div>
+        <input
+            :id="id"
+            :value="modelValue"
+            :type="type"
+            :placeholder="placeholder"
+            :autocomplete="autocomplete"
+            :inputmode="inputmode"
+            class="base-input"
+            @input="$emit('update:modelValue', $event.target.value)"
+        />
+
+    </div>
 </template>
 
 <script setup>
-defineProps({
-  modelValue: String,
-  label: String,
-  placeholder: String,
-  hint: String,
-  type: {
-    type: String,
-    default: "text",
-  },
-  disabled: Boolean,
-});
 
-defineEmits(["update:modelValue"]);
+defineProps({
+
+    id:String,
+
+    modelValue:String,
+
+    label:String,
+
+    placeholder:String,
+
+    autocomplete:String,
+
+    inputmode:String,
+
+    type:{
+        type:String,
+        default:"text"
+    }
+
+})
+
+defineEmits(["update:modelValue"])
 </script>
 
 <style>

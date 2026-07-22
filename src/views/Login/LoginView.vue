@@ -34,16 +34,14 @@
         >
           Documento de identidad
         </label>
-
-        <input
-          id="cedula"
-          v-model="form.cedula"
-          type="text"
-          inputmode="numeric"
-          placeholder="Ingresa tu número de cédula"
-          autocomplete="username"
-          class="w-full rounded-xl border border-white/20 bg-white/10 px-4 py-[clamp(0.65rem,1.5vh,0.85rem)] text-white outline-none placeholder:text-slate-400 focus:border-blue-400 focus:ring-2 focus:ring-blue-400/30"
-        />
+          <baseinput
+            id="cedula"
+            v-model="form.cedula"
+            placeholder="Ingresa tu número de cédula"
+            autocomplete="username"
+            inputmode="numeric"
+            />
+        
       </div>
 
       <div>
@@ -54,14 +52,14 @@
           Correo institucional
         </label>
 
-        <input
+        <baseinput
           id="correo"
           v-model="form.correoInstitucional"
           type="email"
-          placeholder="usuario@universidad.edu.ec"
+          placeholder="Ingresa tu correo institucional"
           autocomplete="email"
-          class="w-full rounded-xl border border-white/20 bg-white/10 px-4 py-[clamp(0.65rem,1.5vh,0.85rem)] text-white outline-none placeholder:text-slate-400 focus:border-blue-400 focus:ring-2 focus:ring-blue-400/30"
-        />
+          inputmode="email"
+          />
       </div>
 
       <p
@@ -71,12 +69,14 @@
         {{ errorMessage }}
       </p>
 
-      <button
-        type="submit"
-        class="w-full rounded-xl bg-blue-600 px-5 py-[clamp(0.7rem,1.5vh,0.85rem)] font-semibold text-white transition hover:bg-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-400/30"
-      >
+      <basebutton variant="primary"
+         
+         :disabled="!form.cedula.trim() || !form.correoInstitucional.trim()"
+
+       
+         >
         Ingresar
-      </button>
+      </basebutton>
     </form>
 
     <footer
@@ -90,6 +90,8 @@
 <script setup lang="ts">
 import { reactive, ref } from "vue";
 import { useRouter } from "vue-router";
+import baseinput from "@/components/Login/button/baseInput.vue";
+import basebutton from "@/components/Login/button/BaseButton.vue";
 
 const router = useRouter();
 
@@ -108,6 +110,6 @@ function irAlHome(): void {
     return;
   }
 
-  router.replace({ name: "home" });
+  router.replace({ name: "ballot" });
 }
 </script>

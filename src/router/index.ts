@@ -1,6 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 
-import BaseShellLayout from '../layouts/BaseShellLayout.vue'
+
 
 const router = createRouter({
 
@@ -19,13 +19,13 @@ const router = createRouter({
         {
           path: "login",
           name: "login",
-          component: () => import("../views/login/LoginView.vue"),
+          component: () => import("../views/Login/LoginView.vue"),
         },
-       /*  {
-          path: "home",
-          name: "home",
-          component: () => import("../views/Login/HomeView.vue"),
-        }, */
+         {
+          path: "ballot",
+          name: "ballot",
+          component: () => import("../views/dashboard/ballotView.vue"),
+        }, 
       ],
     },
   ],
