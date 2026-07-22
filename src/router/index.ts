@@ -1,25 +1,34 @@
 import { createRouter, createWebHistory } from 'vue-router'
 
-import FundSisveView from '@/views/FundSisveView.vue'
+import BaseShellLayout from '../layouts/BaseShellLayout.vue'
 
 const router = createRouter({
 
     history:createWebHistory(),
 
-    routes:[
+  routes: [
+    {
+      path: "/",
+      component: () => import("../layouts/BaseShellLayout.vue"),
 
+      children: [
         {
-
-            path:'/',
-
-            component:FundSisveView
-
-
+          path: "",
+          redirect: { name: "login" },
         },
-        
-
-
-    ]
+        {
+          path: "login",
+          name: "login",
+          component: () => import("../views/login/LoginView.vue"),
+        },
+       /*  {
+          path: "home",
+          name: "home",
+          component: () => import("../views/Login/HomeView.vue"),
+        }, */
+      ],
+    },
+  ],
 
 })
 
