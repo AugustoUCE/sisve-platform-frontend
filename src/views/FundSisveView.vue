@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import FundSisve from '@/layouts/FundSisve.vue'
+import FundSisveLayout from '@/layouts/FundSisveLayout.vue'
+import BaseButton from '@/components/Login/button/BaseButton.vue'
 const showLogin = ref(false)
 function openLogin() { 
   showLogin.value = true
@@ -9,7 +10,7 @@ function openLogin() {
 
 <template>
     
-    <FundSisve>
+    <FundSisveLayout>
         <div
             class="linkme-card"
             :class="{ active: showLogin }"
@@ -22,6 +23,13 @@ function openLogin() {
             
 
         </div>
-    </FundSisve>
+        <BaseButton>
+        <div
+            @click="openLogin"
+        >
+            Abrir Login
+        </div>
+        </BaseButton>
+    </FundSisveLayout>
 
 </template>
