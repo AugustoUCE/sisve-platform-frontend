@@ -217,3 +217,42 @@ body,
 .linkme-card::-webkit-scrollbar {
   display: none;
 }
+
+
+
+
+/* RECUADRO DE VOTAR*/
+
+
+.vote-box{
+    width:40px;
+    height:40px;
+
+    border:2px solid #cbd5e1;
+    border-radius:6px;
+
+    position:relative;
+    overflow:hidden;
+
+    flex-shrink:0;
+}
+
+.mark{
+    position:absolute;
+    inset:0;
+}
+
+.mark line{
+    stroke:#000;
+    stroke-width:7;
+    stroke-linecap:round;
+
+    stroke-dasharray:100;
+    stroke-dashoffset:100;
+
+    transition:stroke-dashoffset .3s ease;
+}
+
+.vote-box.active line{
+    stroke-dashoffset:0;
+}

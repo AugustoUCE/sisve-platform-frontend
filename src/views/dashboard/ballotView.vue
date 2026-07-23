@@ -13,19 +13,18 @@
       </h2>
 
       <!-- Opciones -->
-      <div class="space-y-4">
+      <div class="space-y-4 ">
 
         <label
           v-for="opcion in opciones"
           :key="opcion.id"
-          class="flex cursor-pointer items-center gap-4 rounded-2xl border border-slate-600 bg-slate-800/40 p-4 transition hover:border-cyan-400"
+          class="flex flex-wrap cursor-pointer items-center gap-4 w-64 h-90
+           rounded-2xl border border-slate-600 bg-slate-800/40 p-4 transition hover:border-cyan-400"
         >
-          <input
-            v-model="seleccion"
-            type="radio"
-            :value="opcion.id"
-            class="h-5 w-5"
-          />
+          <VoteBox
+            :selected="seleccion === opcion.id"
+            @select="seleccion = opcion.id"
+           />
 
           <img
             :src="opcion.logo"
@@ -69,7 +68,13 @@
 
 <script setup lang="ts">
 import { ref } from "vue";
+<<<<<<< Updated upstream
 import BaseButton from "@/components/button/BaseButton.vue";
+=======
+import BaseButton from "../../components/button/baseButton.vue";
+import VoteBox from "@/components/voteBox/voteBox.vue";
+
+>>>>>>> Stashed changes
 const seleccion = ref<number | null>(null);
 const error = ref("");
 
