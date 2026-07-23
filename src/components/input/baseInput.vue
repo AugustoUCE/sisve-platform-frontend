@@ -1,54 +1,61 @@
 <template>
-<div class="input-container">
+  <div class="input-container">
+    <label
+      v-if="label"
+      class="input-label"
+      :for="id"
+    >
+      {{ label }}
+    </label>
 
-        <label
-            v-if="label"
-            class="input-label"
-            :for="id"
-        >
-            {{ label }}
-        </label>
-
-        <input
-            :id="id"
-            :value="modelValue"
-            :type="type"
-            :placeholder="placeholder"
-            :autocomplete="autocomplete"
-            :inputmode="inputmode"
-            class="base-input"
-            @input="$emit('update:modelValue', $event.target.value)"
-        />
-
-    </div>
+    <input
+      :id="id"
+      :value="modelValue"
+      :type="type"
+      :placeholder="placeholder"
+      :autocomplete="autocomplete"
+      :inputmode="inputmode"
+      class="base-input"
+      @input="handleInput"
+    />
+  </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
+interface Props {
+  id?: string
+  modelValue?: string
+  label?: string
+  placeholder?: string
+  autocomplete?: string
+  inputmode?:
+    | "none"
+    | "text"
+    | "decimal"
+    | "numeric"
+    | "tel"
+    | "search"
+    | "email"
+    | "url"
+  type?: string
+}
 
-defineProps({
-
-    id:String,
-
-    modelValue:String,
-
-    label:String,
-
-    placeholder:String,
-
-    autocomplete:String,
-
-    inputmode:String,
-
-    type:{
-        type:String,
-        default:"text"
-    }
-
+withDefaults(defineProps<Props>(), {
+  id: undefined,
+  modelValue: "",
+  label: undefined,
+  placeholder: undefined,
+  autocomplete: undefined,
+  inputmode: "text",
+  type: "text",
 })
 
-defineEmits(["update:modelValue"])
+const emit = defineEmits<{
+  "update:modelValue": [value: string]
+}>()
+
+function handleInput(event: Event): void {
+  const input = event.target as HTMLInputElement
+  emit("update:modelValue", input.value)
+}
 </script>
-
-<style>
-
-</style>

@@ -2,8 +2,6 @@
   <section
     class="mx-auto flex h-full min-h-0 w-full max-w-3xl flex-col justify-center py-4"
   >
-    
-
     <!-- Tarjeta -->
     <div
       class="rounded-3xl border border-white/10 p-8 backdrop-blur-xl
@@ -71,8 +69,7 @@
 
 <script setup lang="ts">
 import { ref } from "vue";
-import BaseButton from "../../components/button/baseButton.vue";
-
+import BaseButton from "@/components/button/BaseButton.vue";
 const seleccion = ref<number | null>(null);
 const error = ref("");
 

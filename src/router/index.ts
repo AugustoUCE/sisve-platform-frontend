@@ -9,7 +9,7 @@ const router = createRouter({
   routes: [
     {
       path: "/",
-      component: () => import("../layouts/baseShellLayout.vue"),
+      component: () => import("@/layouts/BaseShellLayout.vue"),
 
       children: [
         {
@@ -19,12 +19,12 @@ const router = createRouter({
         {
           path: "login",
           name: "login",
-          component: () => import("../views/login/loginView.vue"),
+          component: () => import("@/views/login/LoginView.vue"),
         },
          {
           path: "ballot",
           name: "ballot",
-          component: () => import("../views/dashboard/ballotView.vue"),
+          component: () => import("@/views/dashboard/BallotView.vue"),
         }, 
       ],
     },

@@ -90,8 +90,8 @@
 <script setup lang="ts">
 import { reactive, ref } from "vue";
 import { useRouter } from "vue-router";
-import BaseInput from "../../components/input/baseInput.vue";
-import BaseButton from "../../components/button/baseButton.vue";
+import BaseInput from "@/components/input/BaseInput.vue";
+import BaseButton from "@/components/button/BaseButton.vue";
 
 const router = useRouter();
 
