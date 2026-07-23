@@ -34,7 +34,7 @@
         >
           Documento de identidad
         </label>
-          <baseinput
+          <BaseInput
             id="cedula"
             v-model="form.cedula"
             placeholder="Ingresa tu número de cédula"
@@ -52,7 +52,7 @@
           Correo institucional
         </label>
 
-        <baseinput
+        <BaseInput
           id="correo"
           v-model="form.correoInstitucional"
           type="email"
@@ -69,14 +69,14 @@
         {{ errorMessage }}
       </p>
 
-      <basebutton variant="primary"
+      <BaseButton variant="primary"
          
          :disabled="!form.cedula.trim() || !form.correoInstitucional.trim()"
 
        
          >
         Ingresar
-      </basebutton>
+      </BaseButton>
     </form>
 
     <footer
@@ -90,8 +90,8 @@
 <script setup lang="ts">
 import { reactive, ref } from "vue";
 import { useRouter } from "vue-router";
-import baseinput from "@/components/Login/button/baseInput.vue";
-import basebutton from "@/components/Login/button/BaseButton.vue";
+import BaseInput from "../../components/input/baseInput.vue";
+import BaseButton from "../../components/button/baseButton.vue";
 
 const router = useRouter();
 

@@ -71,7 +71,7 @@
 
 <script setup lang="ts">
 import { ref } from "vue";
-import BaseButton from "@/components/Login/button/BaseButton.vue";
+import BaseButton from "../../components/button/baseButton.vue";
 
 const seleccion = ref<number | null>(null);
 const error = ref("");
