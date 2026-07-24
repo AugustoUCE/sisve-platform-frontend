@@ -1,6 +1,6 @@
 <template>
   <section
-    class="mx-auto flex h-full min-h-0 w-full max-w-md flex-col justify-center py-2"
+    class="mx-10 my-10 flex  h-screen max-w-7xl flex-col justify-center py-4"
   >
     <header class="mb-[clamp(1rem,2.5vh,2rem)] text-center">
       <img

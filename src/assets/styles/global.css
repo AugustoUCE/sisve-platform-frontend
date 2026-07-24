@@ -72,8 +72,9 @@ body,
 
 .linkme-card {
   display: flex;
+  flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   width: min(60%,1100px);
   height: calc(100dvh - 48px);
 
@@ -225,10 +226,10 @@ body,
 
 
 .vote-box{
-    width:40px;
-    height:40px;
-
-    border:2px solid #cbd5e1;
+    width:40%;
+    height:20%;
+    margin:29px auto;
+    border:2px solid #000000;
     border-radius:6px;
 
     position:relative;
@@ -240,6 +241,11 @@ body,
 .mark{
     position:absolute;
     inset:0;
+}
+.linea{
+  stroke:#000;
+  stroke-width:7;
+  stroke-linecap:round;
 }
 
 .mark line{
