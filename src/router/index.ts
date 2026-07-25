@@ -26,6 +26,11 @@ const router = createRouter({
           name: "ballot",
           component: () => import("@/views/dashboard/BallotView.vue"),
         }, 
+        {
+          path: "/certificate",
+          name: "certificate",
+          component: () => import("@/views/certificate/CertificateView.vue"),
+        }
       ],
     },
   ],

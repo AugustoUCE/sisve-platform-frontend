@@ -98,7 +98,7 @@
 
 <script setup lang="ts">
 import { computed, ref } from "vue";
-
+import { useRouter } from "vue-router";
 import BaseButton from "@/components/button/BaseButton.vue";
 import SpecialVoteOption from "@/components/voteBox/SpecialVoteOption.vue";
 import VoteOptionCard from "@/components/voteBox/VoteOptionCard.vue";
@@ -109,7 +109,7 @@ import type { VoteOption } from "@/interfaces/voter/Voter.ts";
 const seleccionCandidato = ref<number | null>(null);
 const seleccionEspecial = ref<SpecialVoteType | null>(null);
 const error = ref("");
-
+const router = useRouter();
 const opciones: VoteOption[] = [
   {
     id: 1,
@@ -185,9 +185,7 @@ function emitirVoto(): void {
     alert(`Voto registrado como ${nombreSeleccionEspecial.value}.`);
     return;
   }
-
-  alert(
-    `Voto registrado para la candidatura ${seleccionCandidato.value}.`,
-  );
+  router.push("/certificate");
+  
 }
 </script>
