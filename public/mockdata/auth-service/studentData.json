@@ -1,10 +1,38 @@
+
 {
-  "compilerOptions": {
-    "target": "es2016",
-    "module": "commonjs",
-    "esModuleInterop": true,
-    "forceConsistentCasingInFileNames": true,
-    "strict": true,
-    "skipLibCheck": true
-  }
+  "students": [
+    {
+      "id": 1,
+      "cedula": "1723456789",
+      "correoInstitucional": "jhon.arteaga@uce.edu.ec",
+      "nombres": "Jhon",
+      "apellidos": "Arteaga",
+      "facultad": "Ingeniería y Ciencias Aplicadas",
+      "carrera": "Computación",
+      "puedeVotar": true,
+      "yaVoto": false
+    },
+    {
+      "id": 2,
+      "cedula": "1711111111",
+      "correoInstitucional": "maria.perez@uce.edu.ec",
+      "nombres": "María",
+      "apellidos": "Pérez",
+      "facultad": "Ingeniería y Ciencias Aplicadas",
+      "carrera": "Software",
+      "puedeVotar": true,
+      "yaVoto": true
+    },
+    {
+      "id": 3,
+      "cedula": "1700000000",
+      "correoInstitucional": "juan.lopez@uce.edu.ec",
+      "nombres": "Juan",
+      "apellidos": "López",
+      "facultad": "Medicina",
+      "carrera": "Medicina",
+      "puedeVotar": false,
+      "yaVoto": false
+    }
+  ]
 }

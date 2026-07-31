@@ -1,0 +1,16 @@
+[
+  {
+    "idCandidato": 1,
+    "idCargo": 1,
+    "nombre": "Lista A",
+    "descripcion": "Innovación y participación estudiantil.",
+    "logo": "/src/assets/images/listaA.png"
+  },
+  {
+    "idCandidato": 2,
+    "idCargo": 1,
+    "nombre": "Lista B",
+    "descripcion": "Compromiso con el bienestar universitario.",
+    "logo": "/src/assets/images/listaB.png"
+  }
+]

@@ -35,9 +35,10 @@ import { computed } from "vue";
 
 import VoteBox from "@/components/voteBox/VoteBox.vue";
 import type { VoteOption } from "@/interfaces/voter/Voter.ts";
+import type { Candidate } from "@/interfaces/election/Candidate.ts";
 
 const props = defineProps<{
-  option: VoteOption;
+  option: Candidate;
   selected: boolean;
   disabled: boolean;
 }>();
@@ -63,6 +64,6 @@ function seleccionar(): void {
     return;
   }
 
-  emit("select", props.option.id);
+  emit("select", props.option.idCandidato);
 }
 </script>

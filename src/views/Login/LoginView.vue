@@ -90,6 +90,7 @@
 <script setup lang="ts">
 import { reactive, ref } from "vue";
 import { useRouter } from "vue-router";
+import {login} from "@/services/auth-service";
 import BaseInput from "@/components/input/BaseInput.vue";
 import BaseButton from "@/components/button/BaseButton.vue";
 
@@ -102,12 +103,30 @@ const form = reactive({
 
 const errorMessage = ref("");
 
-function irAlHome(): void {
+async function irAlHome(): Promise<void> {
   errorMessage.value = "";
 
   if (!form.cedula.trim() || !form.correoInstitucional.trim()) {
     errorMessage.value = "Completa todos los campos para continuar.";
     return;
+  }
+
+  const response = await login({
+    cedula: form.cedula,
+    correoInstitucional: form.correoInstitucional,
+  });
+
+  if (!response.success) {
+    errorMessage.value = response.message;
+    return;
+  }
+
+  if (response.token) {
+    localStorage.setItem("token", response.token);
+  }
+
+  if (response.student) {
+    localStorage.setItem("student", JSON.stringify(response.student));
   }
 
   router.replace({ name: "ballot" });

@@ -53,9 +53,9 @@
         >
           <VoteOptionCard
             v-for="opcion in opciones"
-            :key="opcion.id"
+            :key="opcion.idCandidato"
             :option="opcion"
-            :selected="seleccionCandidato === opcion.id"
+            :selected="seleccionCandidato === opcion.idCandidato"
             :disabled="candidaturasBloqueadas"
             @select="seleccionarCandidato"
           />
@@ -97,46 +97,77 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from "vue";
+import { computed, onMounted,ref } from "vue";
 import { useRouter } from "vue-router";
 import BaseButton from "@/components/button/BaseButton.vue";
 import SpecialVoteOption from "@/components/voteBox/SpecialVoteOption.vue";
 import VoteOptionCard from "@/components/voteBox/VoteOptionCard.vue";
 
 import type { SpecialVoteType } from "@/components/voteBox/SpecialVoteOption.vue";
-import type { VoteOption } from "@/interfaces/voter/Voter.ts";
+
+
+import {
+  getActiveElection,
+  getCargos,
+  getCandidates
+} from "@/services/election-service";
+import type { Candidate } from "@/interfaces/election/Candidate";
+const router = useRouter();
+
+
+const titulo = ref("");
+const descripcion = ref("");
+
+const opciones = ref<Candidate[]>([]);
 
 const seleccionCandidato = ref<number | null>(null);
 const seleccionEspecial = ref<SpecialVoteType | null>(null);
-const error = ref("");
-const router = useRouter();
-const opciones: VoteOption[] = [
-  {
-    id: 1,
-    nombre: "Lista A",
-    descripcion: "Innovación y participación estudiantil.",
-    logo: "/src/assets/images/listaA.png",
-  },
-  {
-    id: 2,
-    nombre: "Lista B",
-    descripcion: "Compromiso con el bienestar universitario.",
-    logo: "/src/assets/images/listaB.png",
-  },
-];
 
-const candidaturasBloqueadas = computed<boolean>(() => {
+const error = ref("");
+
+onMounted(async () => {
+ try {
+    const election = await getActiveElection();
+
+     const cargos = await getCargos(
+      election.idEleccion
+    );
+    const cargo = cargos.at(0);
+
+    if (!cargo) {
+      error.value = "No existen cargos.";
+      return;
+    }
+
+        
+    titulo.value = cargo.nombre;
+    descripcion.value = cargo.descripcion;
+
+
+     opciones.value = await getCandidates(
+      cargo.idCargo
+    );
+
+
+
+  } catch (e) {
+  console.error("Error cargando papeleta:", e);
+  error.value = "No fue posible cargar la papeleta.";
+}
+});
+
+const candidaturasBloqueadas = computed(() => {
   return seleccionEspecial.value !== null;
 });
 
-const haySeleccion = computed<boolean>(() => {
+const haySeleccion = computed(() => {
   return (
     seleccionCandidato.value !== null ||
     seleccionEspecial.value !== null
   );
 });
 
-const nombreSeleccionEspecial = computed<string>(() => {
+const nombreSeleccionEspecial = computed(() => {
   if (seleccionEspecial.value === "BLANCO") {
     return "voto blanco";
   }
@@ -151,29 +182,27 @@ const nombreSeleccionEspecial = computed<string>(() => {
 function seleccionarVotoEspecial(type: SpecialVoteType): void {
   error.value = "";
 
-  // Si vuelve a presionar la misma opción, se desmarca.
   if (seleccionEspecial.value === type) {
     seleccionEspecial.value = null;
     return;
   }
 
   seleccionEspecial.value = type;
-
-  // Se elimina cualquier candidatura seleccionada.
   seleccionCandidato.value = null;
 }
 
-function seleccionarCandidato(optionId: number): void {
+function seleccionarCandidato(idCandidato: number): void {
+
   if (candidaturasBloqueadas.value) {
     return;
   }
 
-  seleccionCandidato.value = optionId;
+  seleccionCandidato.value = idCandidato;
   seleccionEspecial.value = null;
-  error.value = "";
 }
 
 function emitirVoto(): void {
+
   error.value = "";
 
   if (!haySeleccion.value) {
@@ -182,10 +211,10 @@ function emitirVoto(): void {
   }
 
   if (seleccionEspecial.value !== null) {
-    alert(`Voto registrado como ${nombreSeleccionEspecial.value}.`);
+    alert(`Voto registrado como ${nombreSeleccionEspecial.value}`);
     return;
   }
+
   router.push("/certificate");
-  
 }
 </script>

@@ -1,0 +1,24 @@
+{
+  "idEleccion": 1,
+  "cargos": [
+    {
+      "idCargo": 1,
+      "nombre": "Presidente",
+      "descripcion": "Seleccione una candidatura.",
+      "candidatos": [
+        {
+          "idCandidato": 1,
+          "nombre": "Lista A",
+          "descripcion": "Innovación.",
+          "logo": "/images/listaA.png"
+        },
+        {
+          "idCandidato": 2,
+          "nombre": "Lista B",
+          "descripcion": "Compromiso.",
+          "logo": "/images/listaB.png"
+        }
+      ]
+    }
+  ]
+}
