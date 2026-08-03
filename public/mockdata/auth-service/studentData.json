@@ -3,8 +3,8 @@
   "students": [
     {
       "id": 1,
-      "cedula": "1723456789",
-      "correoInstitucional": "jhon.arteaga@uce.edu.ec",
+      "cedula": "",
+      "correoInstitucional": "jjarteaga@uce.edu.ec",
       "nombres": "Jhon",
       "apellidos": "Arteaga",
       "facultad": "Ingeniería y Ciencias Aplicadas",

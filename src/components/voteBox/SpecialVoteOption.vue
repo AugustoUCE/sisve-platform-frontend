@@ -1,8 +1,8 @@
 <template>
   <button
     type="button"
-    class="flex w-full items-center gap-4 rounded-2xl border p-5
-           text-left transition duration-200"
+    class="flex min-h-5 w-50 items-center 
+           rounded-2xl border p-4 bg-slate-800/40 p-4 transition"
     :class="
       selected
         ? 'border-cyan-400 bg-cyan-400/15 ring-2 ring-cyan-400/30'
@@ -11,11 +11,12 @@
     :aria-pressed="selected"
     @click="seleccionar"
   >
+  
     <!-- Conserva la animación original -->
     <VoteBox :selected="selected" />
-
+    
     <div>
-      <h3 class="text-lg font-semibold text-black">
+      <h3 class="text-lg font-semibold text-black mr-2">
         {{ title }}
       </h3>
 

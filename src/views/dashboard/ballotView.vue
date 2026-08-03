@@ -11,15 +11,15 @@
         </h2>
 
         <p class="mb-6 text-sm text-slate-600">
-          Seleccione una candidatura o una opción especial.
+          Seleccione una opción .
         </p>
 
         <!-- Voto blanco y voto nulo -->
-        <div class="mb-8 grid grid-cols-1 gap-4 md:grid-cols-2">
+        <div class="  flex items-center">
           <SpecialVoteOption
             type="BLANCO"
             title="Voto blanco"
-            description="No seleccionar ninguna candidatura."
+            description=""
             :selected="seleccionEspecial === 'BLANCO'"
             @select="seleccionarVotoEspecial"
           />
@@ -27,7 +27,7 @@
           <SpecialVoteOption
             type="NULO"
             title="Voto nulo"
-            description="Registrar voluntariamente el voto como nulo."
+            description=""
             :selected="seleccionEspecial === 'NULO'"
             @select="seleccionarVotoEspecial"
           />
@@ -37,14 +37,15 @@
           <h3 class="text-xl font-semibold text-black">
             Candidaturas
           </h3>
-
+          <div class="w-40 text-right">
           <span
             v-if="candidaturasBloqueadas"
-            class="rounded-full border border-amber-500/40
+            class="rounded-min border border-amber-500/40
                    bg-amber-500/10 px-3 py-1 text-xs text-amber-800"
           >
             Opciones bloqueadas
           </span>
+          </div>
         </div>
 
         <!-- Candidaturas -->
@@ -60,17 +61,17 @@
             @select="seleccionarCandidato"
           />
         </div>
-
+        <div class="w-120 text-left">
         <p
           v-if="candidaturasBloqueadas"
-          class="mt-5 rounded-lg border border-amber-500/40
+          class="  rounded-lg border border-amber-500/40
                  bg-amber-500/10 px-4 py-2 text-sm text-amber-800"
         >
           Las candidaturas están bloqueadas porque seleccionó
           {{ nombreSeleccionEspecial }}. Presione nuevamente la opción para
           desmarcarla.
         </p>
-
+        </div>
         <!-- Mensaje de error -->
         <p
           v-if="error"
@@ -125,14 +126,18 @@ const seleccionEspecial = ref<SpecialVoteType | null>(null);
 
 const error = ref("");
 
+const idEleccion = ref<number>(0);
+const idCargo = ref<number>(0);
+
 onMounted(async () => {
  try {
     const election = await getActiveElection();
+    idEleccion.value = election.idEleccion;
 
-     const cargos = await getCargos(
-      election.idEleccion
-    );
+    const cargos = await getCargos(election.idEleccion);
     const cargo = cargos.at(0);
+
+
 
     if (!cargo) {
       error.value = "No existen cargos.";
@@ -142,6 +147,7 @@ onMounted(async () => {
         
     titulo.value = cargo.nombre;
     descripcion.value = cargo.descripcion;
+    idCargo.value = cargo.idCargo;
 
 
      opciones.value = await getCandidates(
@@ -209,11 +215,29 @@ function emitirVoto(): void {
     error.value = "Debe seleccionar una opción.";
     return;
   }
+  //voto especial
+   if (seleccionEspecial.value !== null) {
 
-  if (seleccionEspecial.value !== null) {
-    alert(`Voto registrado como ${nombreSeleccionEspecial.value}`);
+    console.log("=== REQUEST VOTO ===");
+    console.log({
+      idVotante: 3, // Luego vendrá del login
+      idEleccion: idEleccion.value,
+      idCargo: idCargo.value,
+      tipoVoto: seleccionEspecial.value
+    });
+
+    router.push("/certificate");
     return;
   }
+
+   // Simular voto a candidato
+  console.log("=== REQUEST VOTO ===");
+  console.log({
+    idVotante: 3,
+    idEleccion: idEleccion.value,
+    idCargo: idCargo.value,
+    idCandidato: seleccionCandidato.value
+  });
 
   router.push("/certificate");
 }
