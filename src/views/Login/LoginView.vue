@@ -90,9 +90,11 @@
 <script setup lang="ts">
 import { reactive, ref } from "vue";
 import { useRouter } from "vue-router";
+//import {login, verificarDeVoto} from "@/services/auth-service";
 import { login } from "@/services/auth-service";
 import BaseInput from "@/components/input/BaseInput.vue";
 import BaseButton from "@/components/button/BaseButton.vue";
+import { useNotificationStore } from "@/store/Notification";
 
 const router = useRouter();
 
@@ -128,6 +130,22 @@ async function irAlHome(): Promise<void> {
   if (response.student) {
     localStorage.setItem("student", JSON.stringify(response.student));
   }
+  /*   const yaVoto = await verificarDeVoto(
+    form.cedula
+  );
+
+  if (yaVoto) {
+    errorMessage.value =
+    "Este usuario ya ejerció su derecho al voto. Solo se puede votar una vez.";
+  return;
+  }*/
+  const notification = useNotificationStore();
+  notification.show(
+  "Inicio de sesión",
+  "Bienvenido al sistema de votación.",
+  "success"
+);
+
 
   router.replace({ name: "ballot" });
 }

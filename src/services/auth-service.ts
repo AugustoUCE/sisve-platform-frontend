@@ -134,3 +134,22 @@ export async function logout(): Promise<void> {
   localStorage.removeItem("token");
   localStorage.removeItem("student");
 }
+
+/*
+export async function verificarDeVoto(
+  cedula: string
+): Promise<boolean> {
+  const response = await fetch("/mockdata/auth-service/studentData.json");
+
+  if (!response.ok) {
+    throw new Error("No se pudo cargar el listado de estudiantes.");
+  }
+
+  const data: StudentData = await response.json();
+
+  const estudiante = data.students.find(
+    (e: any) => e.cedula === cedula
+  );
+
+  return estudiante?.yaVoto ?? false;
+}*/
