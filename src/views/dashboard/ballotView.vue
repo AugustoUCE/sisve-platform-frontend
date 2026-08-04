@@ -129,6 +129,7 @@ const error = ref("");
 const idEleccion = ref<number>(0);
 const idCargo = ref<number>(0);
 
+
 onMounted(async () => {
  try {
     const election = await getActiveElection();
@@ -160,7 +161,13 @@ onMounted(async () => {
   console.error("Error cargando papeleta:", e);
   error.value = "No fue posible cargar la papeleta.";
 }
+ 
 });
+
+
+
+
+
 
 const candidaturasBloqueadas = computed(() => {
   return seleccionEspecial.value !== null;
@@ -220,7 +227,7 @@ function emitirVoto(): void {
 
     console.log("=== REQUEST VOTO ===");
     console.log({
-      idVotante: 3, // Luego vendrá del login
+      
       idEleccion: idEleccion.value,
       idCargo: idCargo.value,
       tipoVoto: seleccionEspecial.value
@@ -233,7 +240,7 @@ function emitirVoto(): void {
    // Simular voto a candidato
   console.log("=== REQUEST VOTO ===");
   console.log({
-    idVotante: 3,
+    
     idEleccion: idEleccion.value,
     idCargo: idCargo.value,
     idCandidato: seleccionCandidato.value

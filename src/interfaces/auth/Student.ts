@@ -4,4 +4,5 @@ export interface Student {
   correoInstitucional: string;
   nombres: string;
   apellidos: string;
+  yaVoto: boolean;
 }

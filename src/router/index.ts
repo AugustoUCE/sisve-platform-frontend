@@ -25,6 +25,7 @@ const router = createRouter({
           path: "ballot",
           name: "ballot",
           component: () => import("@/views/dashboard/BallotView.vue"),
+          
         }, 
         {
           path: "/certificate",

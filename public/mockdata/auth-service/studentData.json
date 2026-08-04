@@ -3,7 +3,7 @@
   "students": [
     {
       "id": 1,
-      "cedula": "",
+      "cedula": "1234567890",
       "correoInstitucional": "jjarteaga@uce.edu.ec",
       "nombres": "Jhon",
       "apellidos": "Arteaga",
