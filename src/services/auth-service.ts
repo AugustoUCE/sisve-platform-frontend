@@ -1,53 +1,136 @@
-//primero interfaces 
+// src/services/auth.service.ts
+
 import type { RequestLogin } from "@/interfaces/auth/RequestLogin";
 import type { ResponseLogin } from "@/interfaces/auth/ResponseLogin";
 import type { Student } from "@/interfaces/auth/Student";
 
-interface StudentData {
-  students: Student[];
+const AUTH_API_URL = import.meta.env.VITE_AUTH_API_URL;
+
+interface BackendLoginResponse {
+  token: string;
+  idVotante: number;
+  correoInstitucional: string;
+  nombres: string;
+  apellidos: string;
 }
-export async function login(
-  request: RequestLogin
-): Promise<ResponseLogin> {
 
-  const response = await fetch("/mockdata/auth-service/studentData.json");
+interface ValidateResponse {
+  valido: boolean;
+  idVotante: number;
+  cedula: string;
+  correoInstitucional: string;
+  nombres: string;
+  apellidos: string;
+}
 
-  const data: StudentData = await response.json();
+export async function login(request: RequestLogin): Promise<ResponseLogin> {
+  try {
+    const response = await fetch(`${AUTH_API_URL}/auth/login`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(request)
+    });
 
-  const student = data.students.find(
-    (s) =>
-      s.cedula === request.cedula &&
-      s.correoInstitucional === request.correoInstitucional
-  );
+    if (!response.ok) {
+      return {
+        success: false,
+        message: "Credenciales incorrectas."
+      };
+    }
 
-  if (!student) {
+    const data: BackendLoginResponse = await response.json();
+
+    const student: Student = {
+      idVotante: data.idVotante,
+      correoInstitucional: data.correoInstitucional,
+      nombres: data.nombres,
+      apellidos: data.apellidos
+    };
+
+    localStorage.setItem("token", data.token);
+    localStorage.setItem("student", JSON.stringify(student));
+
+    return {
+      success: true,
+      message: "Inicio de sesión correcto.",
+      token: data.token,
+      student
+    };
+  } catch (error) {
+    console.error("Error conectando con auth-service:", error);
+
     return {
       success: false,
-      message: "Credenciales incorrectas."
+      message: "No se pudo conectar con auth-service."
     };
   }
-return {
-    success: true,
-    message: "Inicio de sesión correcto.",
-    token: "mock-jwt-token",
-    student
-  };
 }
 
-export async function verificarDeVoto(
-  cedula: string
-): Promise<boolean> {
-  const response = await fetch("/mockdata/auth-service/studentData.json");
+export async function validateToken(): Promise<Student | null> {
+  const token = localStorage.getItem("token");
 
-  if (!response.ok) {
-    throw new Error("No se pudo cargar el listado de estudiantes.");
+  if (!token) {
+    return null;
   }
 
-  const data: StudentData = await response.json();
+  try {
+    const response = await fetch(`${AUTH_API_URL}/auth/validate`, {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    });
 
-  const estudiante = data.students.find(
-    (e: any) => e.cedula === cedula
-  );
+    if (!response.ok) {
+      localStorage.removeItem("token");
+      localStorage.removeItem("student");
+      return null;
+    }
 
-  return estudiante?.yaVoto ?? false;
+    const data: ValidateResponse = await response.json();
+
+    if (!data.valido) {
+      localStorage.removeItem("token");
+      localStorage.removeItem("student");
+      return null;
+    }
+
+    const student: Student = {
+      idVotante: data.idVotante,
+      cedula: data.cedula,
+      correoInstitucional: data.correoInstitucional,
+      nombres: data.nombres,
+      apellidos: data.apellidos
+    };
+
+    localStorage.setItem("student", JSON.stringify(student));
+
+    return student;
+  } catch (error) {
+    console.error("Error validando token:", error);
+
+    localStorage.removeItem("token");
+    localStorage.removeItem("student");
+    return null;
+  }
+}
+
+export async function logout(): Promise<void> {
+  const token = localStorage.getItem("token");
+
+  if (token) {
+    await fetch(`${AUTH_API_URL}/auth/logout`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`
+      },
+      body: "{}"
+    });
+  }
+
+  localStorage.removeItem("token");
+  localStorage.removeItem("student");
 }

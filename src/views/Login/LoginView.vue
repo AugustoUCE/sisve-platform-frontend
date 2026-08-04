@@ -41,7 +41,7 @@
             autocomplete="username"
             inputmode="numeric"
             />
-        
+
       </div>
 
       <div>
@@ -70,10 +70,10 @@
       </p>
 
       <BaseButton variant="primary"
-         
+
          :disabled="!form.cedula.trim() || !form.correoInstitucional.trim()"
 
-       
+
          >
         Ingresar
       </BaseButton>
@@ -90,7 +90,7 @@
 <script setup lang="ts">
 import { reactive, ref } from "vue";
 import { useRouter } from "vue-router";
-import {login, verificarDeVoto} from "@/services/auth-service";
+import { login } from "@/services/auth-service";
 import BaseInput from "@/components/input/BaseInput.vue";
 import BaseButton from "@/components/button/BaseButton.vue";
 
@@ -127,35 +127,8 @@ async function irAlHome(): Promise<void> {
 
   if (response.student) {
     localStorage.setItem("student", JSON.stringify(response.student));
-
   }
 
-  const yaVoto = await verificarDeVoto(
-    form.cedula
-  );
-
-  if (yaVoto) {
-    errorMessage.value =
-    "Este usuario ya ejerció su derecho al voto. Solo se puede votar una vez.";
-  return;
-  }
-
-
-  sessionStorage.setItem(
-  "notification",
-  JSON.stringify({
-    title: "Bienvenido",
-    message: "Has iniciado sesión correctamente."
-  })
-);
-
-
-
-
-
-  router.replace({ name: "ballot"
-     
-
-   });
+  router.replace({ name: "ballot" });
 }
 </script>

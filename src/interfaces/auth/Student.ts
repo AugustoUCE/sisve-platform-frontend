@@ -1,8 +1,7 @@
 export interface Student {
-  id: number;
-  cedula: string;
+  idVotante: number;
+  cedula?: string;
   correoInstitucional: string;
   nombres: string;
   apellidos: string;
-  yaVoto: boolean;
 }
