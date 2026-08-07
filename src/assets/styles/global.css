@@ -267,7 +267,7 @@ body,
 @media print {
 
   @page {
-    size: 85.6mm 54mm;
+    size: A4;
     margin: 0;
   }
 
