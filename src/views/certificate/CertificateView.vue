@@ -154,6 +154,8 @@ onMounted(async () => {
 
   setTimeout(() => {
     window.print();
+    localStorage.removeItem("token");
+    localStorage.removeItem("student");
   }, 300);
 });
 </script>

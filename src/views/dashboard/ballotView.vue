@@ -105,6 +105,7 @@ import SpecialVoteOption from "@/components/voteBox/SpecialVoteOption.vue";
 import VoteOptionCard from "@/components/voteBox/VoteOptionCard.vue";
 
 import type { SpecialVoteType } from "@/components/voteBox/SpecialVoteOption.vue";
+import { emitVote, type VoteRequest } from "@/services/vote-service";
 
 
 import {
@@ -113,6 +114,7 @@ import {
   getCandidates
 } from "@/services/election-service";
 import type { Candidate } from "@/interfaces/election/Candidate";
+import type { Student } from "@/interfaces/auth/Student";
 const router = useRouter();
 
 
@@ -214,7 +216,22 @@ function seleccionarCandidato(idCandidato: number): void {
   seleccionEspecial.value = null;
 }
 
-function emitirVoto(): void {
+function obtenerIdVotante(): number | null {
+  const savedStudent = localStorage.getItem("student");
+
+  if (!savedStudent) {
+    return null;
+  }
+
+  try {
+    const student = JSON.parse(savedStudent) as Student;
+    return student.idVotante ?? null;
+  } catch {
+    return null;
+  }
+}
+
+async function emitirVoto(): Promise<void> {
 
   error.value = "";
 
@@ -222,30 +239,37 @@ function emitirVoto(): void {
     error.value = "Debe seleccionar una opción.";
     return;
   }
-  //voto especial
-   if (seleccionEspecial.value !== null) {
 
-    console.log("=== REQUEST VOTO ===");
-    console.log({
-      
-      idEleccion: idEleccion.value,
-      idCargo: idCargo.value,
-      tipoVoto: seleccionEspecial.value
-    });
+  const idVotante = obtenerIdVotante();
 
-    router.push("/certificate");
+  if (idVotante === null) {
+    error.value = "No fue posible identificar al votante.";
     return;
   }
 
-   // Simular voto a candidato
-  console.log("=== REQUEST VOTO ===");
-  console.log({
-    
-    idEleccion: idEleccion.value,
-    idCargo: idCargo.value,
-    idCandidato: seleccionCandidato.value
-  });
+  const request: VoteRequest =
+    seleccionEspecial.value !== null
+      ? {
+          idVotante,
+          idEleccion: idEleccion.value,
+          idCargo: idCargo.value,
+          idCandidato: null,
+          tipoVoto: seleccionEspecial.value
+        }
+      : {
+          idVotante,
+          idEleccion: idEleccion.value,
+          idCargo: idCargo.value,
+          idCandidato: seleccionCandidato.value
+        };
 
-  router.push("/certificate");
+  //voto especial
+  try {
+    await emitVote(request);
+    await router.push("/certificate");
+  } catch (e) {
+    console.error("Error guardando voto:", e);
+    error.value = "No fue posible guardar el voto. Intente nuevamente.";
+  }
 }
 </script>

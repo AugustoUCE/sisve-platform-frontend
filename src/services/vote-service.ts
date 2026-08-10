@@ -2,11 +2,14 @@
 
 const VOTE_API_URL = import.meta.env.VITE_VOTE_API_URL;
 
+export type SpecialVoteType = "BLANCO" | "NULO";
+
 export interface VoteRequest {
   idVotante: number;
   idEleccion: number;
   idCargo: number;
-  idCandidato: number;
+  idCandidato: number | null;
+  tipoVoto?: SpecialVoteType;
 }
 
 export async function emitVote(request: VoteRequest) {
@@ -25,9 +28,6 @@ export async function emitVote(request: VoteRequest) {
     const errorText = await response.text();
     throw new Error(errorText);
   }
-
-  localStorage.removeItem("token");
-  localStorage.removeItem("student");
 
   return await response.json();
 }

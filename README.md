@@ -101,4 +101,18 @@ Services
 
 Backend
 
+### Flujo de datos de votación
+
+1. El usuario inicia sesión en `LoginView.vue`.
+2. `auth-service.ts` envía las credenciales al backend de autenticación.
+3. Si el login es correcto, se guarda `token` y `student` en `localStorage`.
+4. El usuario entra a `BallotView.vue`.
+5. `election-service.ts` consulta la elección activa, los cargos y los candidatos.
+6. El usuario selecciona una candidatura o un voto especial (`BLANCO` o `NULO`).
+7. Al confirmar, `BallotView.vue` construye el request con `idVotante`, `idEleccion`, `idCargo` y el voto seleccionado.
+8. `vote-service.ts` hace un `POST` a `${VITE_VOTE_API_URL}/votos` con el token en `Authorization`.
+9. Si el backend responde bien, la app redirige a `CertificateView.vue`.
+10. `CertificateView.vue` lee los datos del votante, valida el token, muestra el certificado e imprime la boleta.
+11. Después de imprimir, se limpia `token` y `student` del navegador.
+
 
