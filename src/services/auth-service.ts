@@ -3,44 +3,14 @@
 import type { RequestLogin } from "@/interfaces/auth/RequestLogin";
 import type { ResponseLogin } from "@/interfaces/auth/ResponseLogin";
 import type { Student } from "@/interfaces/auth/Student";
+import { authApi } from "@/services/api";
 
-const AUTH_API_URL = import.meta.env.VITE_AUTH_API_URL;
-
-interface BackendLoginResponse {
-  token: string;
-  idVotante: number;
-  correoInstitucional: string;
-  nombres: string;
-  apellidos: string;
-}
-
-interface ValidateResponse {
-  valido: boolean;
-  idVotante: number;
-  cedula: string;
-  correoInstitucional: string;
-  nombres: string;
-  apellidos: string;
-}
+import type { BackendLoginResponse } from "@/interfaces/auth/BackendLoginResponse";
+import type { ValidateResponse } from "@/interfaces/auth/ValidateResponse";
 
 export async function login(request: RequestLogin): Promise<ResponseLogin> {
   try {
-    const response = await fetch(`${AUTH_API_URL}/auth/login`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify(request)
-    });
-
-    if (!response.ok) {
-      return {
-        success: false,
-        message: "Credenciales incorrectas."
-      };
-    }
-
-    const data: BackendLoginResponse = await response.json();
+    const { data } = await authApi.post<BackendLoginResponse>("/auth/login", request);
 
     const student: Student = {
       idVotante: data.idVotante,
@@ -76,20 +46,7 @@ export async function validateToken(): Promise<Student | null> {
   }
 
   try {
-    const response = await fetch(`${AUTH_API_URL}/auth/validate`, {
-      method: "GET",
-      headers: {
-        Authorization: `Bearer ${token}`
-      }
-    });
-
-    if (!response.ok) {
-      localStorage.removeItem("token");
-      localStorage.removeItem("student");
-      return null;
-    }
-
-    const data: ValidateResponse = await response.json();
+    const { data } = await authApi.get<ValidateResponse>("/auth/validate");
 
     if (!data.valido) {
       localStorage.removeItem("token");
@@ -121,35 +78,9 @@ export async function logout(): Promise<void> {
   const token = localStorage.getItem("token");
 
   if (token) {
-    await fetch(`${AUTH_API_URL}/auth/logout`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`
-      },
-      body: "{}"
-    });
+    await authApi.post("/auth/logout", {});
   }
 
   localStorage.removeItem("token");
   localStorage.removeItem("student");
 }
-
-/*
-export async function verificarDeVoto(
-  cedula: string
-): Promise<boolean> {
-  const response = await fetch("/mockdata/auth-service/studentData.json");
-
-  if (!response.ok) {
-    throw new Error("No se pudo cargar el listado de estudiantes.");
-  }
-
-  const data: StudentData = await response.json();
-
-  const estudiante = data.students.find(
-    (e: any) => e.cedula === cedula
-  );
-
-  return estudiante?.yaVoto ?? false;
-}*/

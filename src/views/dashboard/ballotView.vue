@@ -149,7 +149,7 @@ onMounted(async () => {
 
         
     titulo.value = cargo.nombre;
-    descripcion.value = cargo.descripcion;
+    descripcion.value = cargo.descripcion ?? "";
     idCargo.value = cargo.idCargo;
 
 
@@ -247,21 +247,22 @@ async function emitirVoto(): Promise<void> {
     return;
   }
 
-  const request: VoteRequest =
-    seleccionEspecial.value !== null
-      ? {
-          idVotante,
-          idEleccion: idEleccion.value,
-          idCargo: idCargo.value,
-          idCandidato: null,
-          tipoVoto: seleccionEspecial.value
-        }
-      : {
-          idVotante,
-          idEleccion: idEleccion.value,
-          idCargo: idCargo.value,
-          idCandidato: seleccionCandidato.value
-        };
+  if (seleccionEspecial.value !== null) {
+    error.value = "El backend de votación aún no admite votos blanco o nulo.";
+    return;
+  }
+
+  if (seleccionCandidato.value === null) {
+    error.value = "Debe seleccionar una candidatura válida.";
+    return;
+  }
+
+  const request: VoteRequest = {
+    idVotante,
+    idEleccion: idEleccion.value,
+    idCargo: idCargo.value,
+    idCandidato: seleccionCandidato.value
+  };
 
   //voto especial
   try {

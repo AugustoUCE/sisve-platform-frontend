@@ -1,6 +1,6 @@
 export interface Cargo {
-idCargo: number;
+  idCargo: number;
   idEleccion: number;
   nombre: string;
-  descripcion: string;
+  descripcion?: string;
 }

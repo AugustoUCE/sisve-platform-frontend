@@ -1,33 +1,23 @@
 // src/services/vote.service.ts
 
-const VOTE_API_URL = import.meta.env.VITE_VOTE_API_URL;
-
-export type SpecialVoteType = "BLANCO" | "NULO";
+import { voteApi } from "@/services/api";
+import type { ResponseVote } from "@/interfaces/vote/ResponseVote";
 
 export interface VoteRequest {
   idVotante: number;
   idEleccion: number;
   idCargo: number;
-  idCandidato: number | null;
-  tipoVoto?: SpecialVoteType;
+  idCandidato: number;
 }
 
-export async function emitVote(request: VoteRequest) {
-  const token = localStorage.getItem("token");
+export async function emitVote(request: VoteRequest): Promise<ResponseVote> {
+  const { data } = await voteApi.post<ResponseVote>("/votos", request);
+  return data;
+}
 
-  const response = await fetch(`${VOTE_API_URL}/votos`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`
-    },
-    body: JSON.stringify(request)
-  });
-
-  if (!response.ok) {
-    const errorText = await response.text();
-    throw new Error(errorText);
-  }
-
-  return await response.json();
+export async function verifyIntegrity(idEleccion: number): Promise<boolean> {
+  const { data } = await voteApi.get<{ integridadValida: boolean }>(
+    `/votos/eleccion/${idEleccion}/verificar-integridad`
+  );
+  return data.integridadValida;
 }
