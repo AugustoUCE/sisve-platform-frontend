@@ -3,8 +3,9 @@
 export interface BackendLoginResponse {
   token: string;
   idVotante: number;
-  cedula: number;
+  cedula?: string;
   correoInstitucional: string;
   nombres: string;
   apellidos: string;
+  voto: boolean;
 }
