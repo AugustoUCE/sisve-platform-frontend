@@ -130,15 +130,12 @@ async function irAlHome(): Promise<void> {
   if (response.student) {
     localStorage.setItem("student", JSON.stringify(response.student));
   }
-  /*   const yaVoto = await verificarDeVoto(
-    form.cedula
-  );
 
-  if (yaVoto) {
+  if (response.student?.voto === true) {
     errorMessage.value =
-    "Este usuario ya ejerció su derecho al voto. Solo se puede votar una vez.";
-  return;
-  }*/
+      "Este usuario ya ejerció su derecho al voto. Solo se puede votar una vez.";
+    return;
+  }
   const notification = useNotificationStore();
   notification.show(
   "Inicio de sesión",

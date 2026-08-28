@@ -12,6 +12,8 @@ interface BackendLoginResponse {
   correoInstitucional: string;
   nombres: string;
   apellidos: string;
+  estado: boolean;
+  voto: boolean;
 }
 
 interface ValidateResponse {
@@ -21,6 +23,9 @@ interface ValidateResponse {
   correoInstitucional: string;
   nombres: string;
   apellidos: string;
+  estado: boolean;
+  voto: boolean;
+  
 }
 
 export async function login(request: RequestLogin): Promise<ResponseLogin> {
@@ -46,7 +51,10 @@ export async function login(request: RequestLogin): Promise<ResponseLogin> {
       idVotante: data.idVotante,
       correoInstitucional: data.correoInstitucional,
       nombres: data.nombres,
-      apellidos: data.apellidos
+      apellidos: data.apellidos,
+      estado: data.estado,
+      voto:data.voto
+      
     };
 
     localStorage.setItem("token", data.token);
@@ -102,7 +110,10 @@ export async function validateToken(): Promise<Student | null> {
       cedula: data.cedula,
       correoInstitucional: data.correoInstitucional,
       nombres: data.nombres,
-      apellidos: data.apellidos
+      apellidos: data.apellidos,
+      estado: data.estado,
+      voto:data.voto
+
     };
 
     localStorage.setItem("student", JSON.stringify(student));
@@ -135,9 +146,9 @@ export async function logout(): Promise<void> {
   localStorage.removeItem("student");
 }
 
-/*
-export async function verificarDeVoto(
-  cedula: string
+
+/*export async function verificarVoto(
+  request: RequestLogin
 ): Promise<boolean> {
   const response = await fetch("/mockdata/auth-service/studentData.json");
 
@@ -145,10 +156,10 @@ export async function verificarDeVoto(
     throw new Error("No se pudo cargar el listado de estudiantes.");
   }
 
-  const data: StudentData = await response.json();
+  const data = await response.json();
 
   const estudiante = data.students.find(
-    (e: any) => e.cedula === cedula
+    (e: any) => e.cedula === request.cedula
   );
 
   return estudiante?.yaVoto ?? false;
