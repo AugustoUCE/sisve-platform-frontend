@@ -40,15 +40,13 @@
         <div class="text-[8px] uppercase tracking-[0.2em] text-gray-500">
           Validado digitalmente
         </div>
-        <div class="  rounded-md border border-gray-300 bg-white p-1.3">
-          <div class="grid grid-cols-7 gap-[2px]">
-            <div
-              v-for="(cell, index) in qrCells"
-              :key="index"
-              class="h-1 w-1 rounded-[1px]"
-              :class="cell ? 'bg-gray-900' : 'bg-white'"
-            ></div>
-          </div>
+        <div class="rounded-md border border-gray-300 bg-white p-1">
+          <img
+            v-if="qrDataUrl"
+            :src="qrDataUrl"
+            alt="Código QR del certificado"
+            class="h-16 w-16"
+          />
         </div>
       </div>
     </div>
@@ -56,7 +54,8 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted, ref } from "vue";
+import QRCode from "qrcode";
+import { computed, onMounted, ref, watch } from "vue";
 import { validateToken } from "@/services/auth-service";
 import type { Student } from "@/interfaces/auth/Student";
 
@@ -89,36 +88,27 @@ const qrValue = computed(() => {
     return "CERTIFICADO-VOTACION";
   }
 
-  return `VOTANTE:${student.idVotante ?? "0"}:${student.cedula ?? student.correoInstitucional ?? "sin-datos"}`;
+  return [
+    "CERTIFICADO DE VOTACION",
+    `VOTANTE: ${student.idVotante ?? "0"}`,
+    `CEDULA: ${student.cedula ?? "sin-datos"}`,
+    `NOMBRE: ${student.nombres ?? ""} ${student.apellidos ?? ""}`.trim()
+  ].join(" | ");
 });
 
-const qrCells = computed(() => {
-  const value = qrValue.value;
-  const size = 7;
-  const cells: boolean[] = [];
+const qrDataUrl = ref("");
 
-  for (let row = 0; row < size; row += 1) {
-    for (let col = 0; col < size; col += 1) {
-      const isFinder =
-        (row < 3 && col < 3) ||
-        (row < 3 && col >= size - 3) ||
-        (row >= size - 3 && col < 3);
-
-      const isCenter = row >= 2 && row <= 4 && col >= 2 && col <= 4;
-
-      if (isFinder || isCenter) {
-        cells.push(true);
-        continue;
-      }
-
-      const charCode = value.charCodeAt((row * 3 + col * 5) % value.length);
-      const pattern = ((charCode + row * 7 + col * 3) % 5) < 2;
-      cells.push(pattern);
-    }
-  }
-
-  return cells;
-});
+watch(
+  qrValue,
+  async (value) => {
+    qrDataUrl.value = await QRCode.toDataURL(value, {
+      errorCorrectionLevel: "M",
+      margin: 1,
+      width: 160
+    });
+  },
+  { immediate: true }
+);
 
 onMounted(async () => {
   try {
