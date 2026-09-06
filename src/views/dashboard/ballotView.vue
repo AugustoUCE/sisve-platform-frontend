@@ -113,8 +113,8 @@ import {
   getCargos,
   getCandidates
 } from "@/services/election-service";
+import { validateToken } from "@/services/auth-service";
 import type { Candidate } from "@/interfaces/election/Candidate";
-import type { Student } from "@/interfaces/auth/Student";
 const router = useRouter();
 
 
@@ -216,21 +216,6 @@ function seleccionarCandidato(idCandidato: number): void {
   seleccionEspecial.value = null;
 }
 
-function obtenerIdVotante(): number | null {
-  const savedStudent = localStorage.getItem("student");
-
-  if (!savedStudent) {
-    return null;
-  }
-
-  try {
-    const student = JSON.parse(savedStudent) as Student;
-    return student.idVotante ?? null;
-  } catch {
-    return null;
-  }
-}
-
 async function emitirVoto(): Promise<void> {
 
   error.value = "";
@@ -240,7 +225,8 @@ async function emitirVoto(): Promise<void> {
     return;
   }
 
-  const idVotante = obtenerIdVotante();
+  const student = await validateToken();
+  const idVotante = student?.idVotante ?? null;
 
   if (idVotante === null) {
     error.value = "No fue posible identificar al votante.";
@@ -268,9 +254,11 @@ async function emitirVoto(): Promise<void> {
   try {
     await emitVote(request);
     await router.push("/certificate");
-  } catch (e) {
+  } catch (e: any) {
     console.error("Error guardando voto:", e);
-    error.value = "No fue posible guardar el voto. Intente nuevamente.";
+    error.value = e?.response?.data?.detalle
+      ?? e?.response?.data?.message
+      ?? "No fue posible guardar el voto. Intente nuevamente.";
   }
 }
 </script>
